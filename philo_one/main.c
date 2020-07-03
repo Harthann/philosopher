@@ -1,42 +1,53 @@
-#include "philo_two.h"
+#include "philo_one.h"
 
 t_philo *init_philosopher(char **av, int ac)
 {
-	t_philo *list;
-	t_fork	*forks;
-	sem_t	*tm;
-	int		i;
+	t_philo			*list;
+	t_status		*status;
+	pthread_mutex_t	*fork_table;
+	int				i;
 
 	errno = 0;
 	if (!(list = malloc(sizeof(t_philo) * ft_atoi(av[1]))))
 		return (NULL);
-	if ((!(forks = malloc(sizeof(t_fork)))))
+	if ((!(status = malloc(sizeof(t_status)))))
+		return (NULL);
+	if (!(fork_table = init_mutex_table(ft_atoi(av[1]))))
 		return (NULL);
 	i = 0;
-	if (SEM_FAILED == (tm = sem_open("/my_fork", O_CREAT, 0644, 0)))
-		return (NULL);
-	forks->simu_state = 0;
-	forks->count_meal = ac == 6 ? ft_atoi(av[5]) : -1;
+	status->simu_state = 0;
+	status->count_meal = ac == 6 ? ft_atoi(av[5]) : -1;
 	while (i < ft_atoi(av[1]))
 	{
-		create_philosopher(list + i, i + 1, av, forks);
-		// if (i % 2 == 0)
-			sem_post(tm);
+		(list + i)->mutex_right = fork_table + i;
+		(list + i)->mutex_left = i + 1 == ft_atoi(av[1]) ? fork_table : fork_table + i + 1;
+		create_philosopher(list + i, i + 1, av, status);
+		i++;
+	}
+	i = 0;
+	while (i < ft_atoi(av[1]))
+	{
 		i++;
 	}
 	return (list);
 }
 
-void	take_a_fork(t_philo *philo)
+void	take_a_fork(t_philo *philo, char c)
 {
 	long			time;
 	struct timeval	start_t;
 	struct timezone tzp;
 
-	sem_wait(philo->sem_fork);
+	if (c == 'r')
+		pthread_mutex_lock(philo->mutex_right);
+	else
+		pthread_mutex_lock(philo->mutex_left);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " has taken a fork\n");
+	if (c == 'r')
+		print_state(time, philo->number, " has taken a fork ", (unsigned long)philo->mutex_right);
+	else
+		print_state(time, philo->number, " has taken a fork ", (unsigned long)philo->mutex_left);
 }
 
 void		*philosopher_loop(void *philo)
@@ -44,9 +55,7 @@ void		*philosopher_loop(void *philo)
 	t_philo *philosopher;
 
 	philosopher = philo;
-	if (SEM_FAILED == (philosopher->sem_fork = sem_open("/my_fork", 0)))
-		return ((void*)-1);
-	while (philosopher->state != 3 && !philosopher->forks->simu_state)
+	while (philosopher->state != 3 && !philosopher->status->simu_state)
 	{
 		if (philosopher->state == 4 || philosopher->state == 2)
 		{
@@ -60,14 +69,12 @@ void		*philosopher_loop(void *philo)
 		}
 		else if (philosopher->state == 1)
 		{
-			sem_post(philosopher->sem_fork);
-			sem_post(philosopher->sem_fork);
+			pthread_mutex_unlock(philosopher->mutex_right);
+			pthread_mutex_unlock(philosopher->mutex_left);
 			philosopher->state = 2;
 			philosopher_sleeping(philosopher);
 		}
 	}
-	sem_unlink("my_fork");
-	sem_close(philosopher->sem_fork);
 	return (NULL);
 }
 
@@ -90,8 +97,6 @@ int		main_simu(t_philo *list, int nb)
 		pthread_join(thread_list[i], NULL);
 		i--;
 	}
-	// sem_unlink("my_fork");
-	// sem_close(list->sem_fork);
 	return (0);
 }
 
@@ -102,7 +107,10 @@ int		main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		return (1);
 	if (!(list = init_philosopher(av, ac)))
+	{
+		write(1, "initialisation failed!\n", 24);
 		return (1);
+	}
 	main_simu(list, ft_atoi(av[1]));
 	ft_free(list, ft_atoi(av[1]));
 	return (0);

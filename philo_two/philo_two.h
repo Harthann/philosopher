@@ -54,5 +54,6 @@ int		philosopher_sleeping(t_philo *philo);
 int		philosopher_thinking(t_philo *philo);
 void	print_state(long timestamp, int number, char *str);
 void	create_philosopher(t_philo *philo, int number, char **av, t_fork *forks);
+void	ft_free(t_philo *list, int nb);
 
 #endif

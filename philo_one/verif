@@ -1,0 +1,39 @@
+1 1 is thinking
+1 1 has taken a fork 7f9beec02d20
+1 1 has taken a fork 7f9beec02d60
+1 1 is eating
+0 2 is thinking
+0 3 is thinking
+0 3 has taken a fork 7f9beec02da0
+0 3 has taken a fork 7f9beec02de0
+0 3 is eating
+1 4 is thinking
+5 3 is sleeping
+6 1 is sleeping
+5 4 has taken a fork 7f9beec02de0
+5 4 has taken a fork 7f9beec02d20
+5 4 is eating
+8 2 has taken a fork 7f9beec02d60
+8 2 has taken a fork 7f9beec02da0
+8 2 is eating
+10 4 is sleeping
+11 1 is thinking
+11 1 has taken a fork 7f9beec02d20
+10 3 is thinking
+13 2 is sleeping
+14 1 has taken a fork 7f9beec02d60
+14 1 is eating
+14 3 has taken a fork 7f9beec02da0
+14 3 has taken a fork 7f9beec02de0
+14 3 is eating
+15 4 is thinking
+19 1 is sleeping
+18 2 is thinking
+18 2 has taken a fork 7f9beec02d60
+19 3 is sleeping
+19 2 has taken a fork 7f9beec02da0
+19 2 is eating
+24 1 is thinking
+24 1 has taken a fork 7f9beec02d20
+23 4 has taken a fork 7f9beec02de0
+24 3 is thinking

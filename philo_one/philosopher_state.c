@@ -1,4 +1,4 @@
-#include "philo_two.h"
+#include "philo_one.h"
 
 int		is_alive(t_philo *philo)
 {
@@ -12,14 +12,14 @@ int		is_alive(t_philo *philo)
 	time = compare_time(tp, philo->timestamp);
 	if (tmp >= philo->ttd)
 	{
-		philo->state = 3;
-		philo->forks->simu_state = 1;
-		print_state(time, philo->number, " died\n");
+		philo->status->simu_state = 1;
+		print_state(time, philo->number, " died\n", 0);
 		if (philo->state == 1)
 		{
-			sem_post(philo->sem_fork);
-			sem_post(philo->sem_fork);
+			pthread_mutex_unlock(philo->mutex_right);
+			pthread_mutex_unlock(philo->mutex_left);
 		}
+		philo->state = 3;
 		return (0);
 	}
 	return (1);
@@ -35,16 +35,16 @@ int		philosopher_eating(t_philo *philo)
 	gettimeofday(&start_t, &tzp);
 	philo->last_meal = start_t;
 	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " is eating\n");
+	print_state(time, philo->number, " is eating\n", 0);
 	time = 0;
-	while (is_alive(philo) && time < philo->tte && philo->forks->simu_state == 0)
+	while (is_alive(philo) && time < philo->tte && philo->status->simu_state == 0)
 	{
 		gettimeofday(&tp, &tzp);
 		time = compare_time(tp, start_t);
 	}
-	philo->forks->count_meal--;
-	if (philo->forks->count_meal == 0)
-		philo->forks->simu_state = 1;
+	philo->status->count_meal < 0 ? 0 : philo->status->count_meal--;
+	if (philo->status->count_meal == 0)
+		philo->status->simu_state = 1;
 	return (0);
 }
 
@@ -57,9 +57,9 @@ int		philosopher_sleeping(t_philo *philo)
 
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " is sleeping\n");
+	print_state(time, philo->number, " is sleeping\n", 0);
 	time = 0;
-	while (is_alive(philo) && time < philo->tts && philo->forks->simu_state == 0)
+	while (is_alive(philo) && time < philo->tts && philo->status->simu_state == 0)
 	{
 		gettimeofday(&tp, &tzp);
 		time = compare_time(tp, start_t);
@@ -75,13 +75,13 @@ int		philosopher_thinking(t_philo *philo)
 
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " is thinking\n");
-	take_a_fork(philo);
-	if (!is_alive(philo) && philo->forks->simu_state == 1)
+	print_state(time, philo->number, " is thinking\n", 0);
+	take_a_fork(philo, 'r');
+	if (!is_alive(philo) && philo->status->simu_state == 1)
 	{
-		sem_post(philo->sem_fork);
+		pthread_mutex_unlock(philo->mutex_right);
 		return (1);
 	}
-	take_a_fork(philo);
+	take_a_fork(philo, 'l');
 	return (0);
 }
