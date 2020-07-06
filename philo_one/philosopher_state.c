@@ -7,8 +7,10 @@ int		is_alive(t_philo *philo)
 	struct timeval	tp;
 	struct timezone tzp;
 
+	if (philo->state == 3)
+		return (0);
 	gettimeofday(&tp, &tzp);
-	tmp = compare_time(tp, philo->last_meal);
+	tmp = compare_time(tp, philo->status->last_meal[philo->number - 1]);
 	time = compare_time(tp, philo->timestamp);
 	if (tmp >= philo->ttd)
 	{
@@ -33,7 +35,7 @@ int		philosopher_eating(t_philo *philo)
 	struct timezone tzp;
 
 	gettimeofday(&start_t, &tzp);
-	philo->last_meal = start_t;
+	philo->status->last_meal[philo->number - 1] = start_t;
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is eating\n", 0);
 	time = 0;
@@ -59,7 +61,7 @@ int		philosopher_sleeping(t_philo *philo)
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n", 0);
 	time = 0;
-	while (is_alive(philo) && time < philo->tts && philo->status->simu_state == 0)
+	while (is_alive(philo) && time < philo->tts && !philo->status->simu_state)
 	{
 		gettimeofday(&tp, &tzp);
 		time = compare_time(tp, start_t);
@@ -73,14 +75,24 @@ int		philosopher_thinking(t_philo *philo)
 	struct timeval	start_t;
 	struct timezone tzp;
 
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
+	gettimeofday(&philo->think_tmst, &tzp);
+	time = compare_time(philo->think_tmst, philo->timestamp);
 	print_state(time, philo->number, " is thinking\n", 0);
+	while (!check_priority(philo->number - 1, *philo, 'r') && !philo->status->simu_state && is_alive(philo))
+	{
+		gettimeofday(&start_t, &tzp);
+		time = compare_time(start_t, philo->think_tmst);
+	}
 	take_a_fork(philo, 'r');
 	if (!is_alive(philo) && philo->status->simu_state == 1)
 	{
-		pthread_mutex_unlock(philo->mutex_right);
+		mutex_unlock(philo->mutex_right, philo->fork_right);
 		return (1);
+	}
+	while (!check_priority(philo->number - 1, *philo, 'l') && !philo->status->simu_state && is_alive(philo))
+	{
+		gettimeofday(&start_t, &tzp);
+		time = compare_time(start_t, philo->think_tmst);
 	}
 	take_a_fork(philo, 'l');
 	return (0);

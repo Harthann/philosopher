@@ -25,8 +25,12 @@
 
 typedef struct s_status
 {
-	int	simu_state;
-	int	count_meal;
+	int				simu_state;
+	int				count_meal;
+	struct timeval	*last_meal;
+	int				*philo_state;
+	int				philo_count;
+	struct s_philo	*list;
 }				t_status;
 
 /*
@@ -42,12 +46,14 @@ typedef struct s_philo
 	long			ttd;
 	long			tte;
 	long			tts;
+	struct timeval	think_tmst;
 	int				number;
-	struct timeval	last_meal;
 	struct timeval	timestamp;
 	t_status		*status;
 	pthread_mutex_t	*mutex_left;
+	char			*fork_right;
 	pthread_mutex_t	*mutex_right;
+	char			*fork_left;
 	char			state;
 }				t_philo;
 
@@ -65,8 +71,13 @@ int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
 void				print_state(long timestamp, int number, char *str,unsigned long addr);
 void				create_philosopher(t_philo *philo, int number, char **av, t_status *status);
-pthread_mutex_t		*init_mutex_table(int length);
+pthread_mutex_t		*init_mutex_table(int length, char **fork_table);
 void				ft_free(t_philo *list, int nb);
+int 	check_priority(int number, t_philo philo, char c);
+
+int		mutex_unlock(pthread_mutex_t *mutex, char *state);
+int		mutex_lock(pthread_mutex_t *mutex, char *state, t_philo *philo);
+int		is_alive(t_philo *philo);
 
 char			*ft_ultox(unsigned long int n);
 

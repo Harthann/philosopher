@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 15:31:27 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/06/30 09:47:34 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/03 09:34:09 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_free(t_philo *list, int nb)
 	int i;
 
 	i = 0;
-	free(list->forks);
+	free(list->status);
 	while (i < nb)
 	{
 		// free(list + i);

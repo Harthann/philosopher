@@ -4,75 +4,106 @@ t_philo *init_philosopher(char **av, int ac)
 {
 	t_philo			*list;
 	t_status		*status;
-	pthread_mutex_t	*fork_table;
+	char				*fork_table;
+	pthread_mutex_t	*mutex_table;
 	int				i;
 
-	errno = 0;
+	i = 0;
 	if (!(list = malloc(sizeof(t_philo) * ft_atoi(av[1]))))
 		return (NULL);
 	if ((!(status = malloc(sizeof(t_status)))))
 		return (NULL);
-	if (!(fork_table = init_mutex_table(ft_atoi(av[1]))))
+	if (!(mutex_table = init_mutex_table(ft_atoi(av[1]), &fork_table)))
 		return (NULL);
-	i = 0;
+	if (!(status->philo_state = malloc(sizeof(int) * ft_atoi(av[1]))))
+		return (NULL);
+	status->philo_count = ft_atoi(av[1]);
+	status->list = list;
+	memset(status->philo_state, 4, status->philo_count);
 	status->simu_state = 0;
 	status->count_meal = ac == 6 ? ft_atoi(av[5]) : -1;
-	while (i < ft_atoi(av[1]))
+	if (!(status->last_meal = malloc(sizeof(struct timeval) * status->philo_count)))
+		return (NULL);
+	while (i < status->philo_count)
 	{
-		(list + i)->mutex_right = fork_table + i;
-		(list + i)->mutex_left = i + 1 == ft_atoi(av[1]) ? fork_table : fork_table + i + 1;
+		(list + i)->mutex_right = mutex_table + i;
+		(list + i)->fork_right = fork_table + i;
+		(list + i)->mutex_left = i + 1 == ft_atoi(av[1]) ? mutex_table : mutex_table + i + 1;
+		(list + i)->fork_left = i + 1 == ft_atoi(av[1]) ? fork_table : fork_table + i + 1;
 		create_philosopher(list + i, i + 1, av, status);
-		i++;
-	}
-	i = 0;
-	while (i < ft_atoi(av[1]))
-	{
 		i++;
 	}
 	return (list);
 }
 
+// void	take_a_fork(t_philo *philo, char c)
+// {
+// 	long			time;
+// 	struct timeval	start_t;
+// 	struct timezone tzp;
+
+// 	if (c == 'r')
+// 		pthread_mutex_lock(philo->mutex_right);
+// 	else
+// 		pthread_mutex_lock(philo->mutex_left);
+// 	gettimeofday(&start_t, &tzp);
+// 	time = compare_time(start_t, philo->timestamp);
+// 	if (c == 'r')
+// 		print_state(time, philo->number, " has taken a fork \n", (unsigned long)philo->mutex_right);
+// 	else
+// 		print_state(time, philo->number, " has taken a fork \n", (unsigned long)philo->mutex_left);
+// }
+
+// /*
 void	take_a_fork(t_philo *philo, char c)
 {
 	long			time;
 	struct timeval	start_t;
 	struct timezone tzp;
 
-	if (c == 'r')
-		pthread_mutex_lock(philo->mutex_right);
-	else
-		pthread_mutex_lock(philo->mutex_left);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
-	if (c == 'r')
-		print_state(time, philo->number, " has taken a fork ", (unsigned long)philo->mutex_right);
-	else
-		print_state(time, philo->number, " has taken a fork ", (unsigned long)philo->mutex_left);
-}
-
-void		*philosopher_loop(void *philo)
-{
-	t_philo *philosopher;
-
-	philosopher = philo;
-	while (philosopher->state != 3 && !philosopher->status->simu_state)
+	if (c == 'l' && !mutex_lock(philo->mutex_left, philo->fork_left, philo))
 	{
-		if (philosopher->state == 4 || philosopher->state == 2)
+		print_state(time, philo->number, " has taken a fork \n", (unsigned long)philo->mutex_left);
+		// print_state(999, philo->mutex_left->__sig, " error check\n", 0);
+	}
+	else if (!mutex_lock(philo->mutex_right, philo->fork_right, philo))
+	{
+		print_state(time, philo->number, " has taken a fork \n", (unsigned long)philo->mutex_right);
+		// print_state(999, philo->mutex_right->__sig, " error check\n", 0);
+	}
+	c = 1;
+}
+// */
+
+void		*philosopher_loop(void *philosopher)
+{
+	t_philo *philo;
+
+	philo = philosopher;
+	while (philo->state != 3 && !philo->status->simu_state)
+	{
+		if (philo->state == 2 || philo->state == 4)
 		{
-			philosopher->state = 0;
-			philosopher_thinking(philosopher);
+			philo->state = 0;
+			// print_state(999, philo->number - 1, " error check\n", 0);
+			philo->status->philo_state[philo->number - 1] = philo->state;
+			philosopher_thinking(philo);
 		}
-		else if (philosopher->state == 4 || philosopher->state == 0)
+		else if (philo->state == 0)
 		{
-			philosopher->state = 1;
-			philosopher_eating(philosopher);
+			philo->state = 1;
+			philo->status->philo_state[philo->number - 1] = philo->state;
+			philosopher_eating(philo);
 		}
-		else if (philosopher->state == 1)
+		else if (philo->state == 1)
 		{
-			pthread_mutex_unlock(philosopher->mutex_right);
-			pthread_mutex_unlock(philosopher->mutex_left);
-			philosopher->state = 2;
-			philosopher_sleeping(philosopher);
+			mutex_unlock(philo->mutex_right, philo->fork_right);
+			mutex_unlock(philo->mutex_left, philo->fork_left);
+			philo->state = 2;
+			philo->status->philo_state[philo->number - 1] = philo->state;
+			philosopher_sleeping(philo);
 		}
 	}
 	return (NULL);
