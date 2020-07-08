@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/29 10:54:39 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/02/29 10:58:14 by nieyraud         ###   ########.fr       */
+/*   Created: 2020/03/07 15:31:27 by nieyraud          #+#    #+#             */
+/*   Updated: 2020/07/08 11:08:04 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "philo_one.h"
 
-void	ft_putnbr(long nb)
+void	ft_free(t_philo *list)
 {
-	if (nb < 0)
-	{
-		write(1, "-", 1);
-		nb = -nb;
-	}
-	if (nb > 9)
-		ft_putnbr(nb / 10);
-	nb = nb % 10 + 48;
-	write(1, &nb, 1);
+	free(list->status->count_meal);
+	free(list->status->last_meal);
+	free(list->status);
+	free(list->mutex_right);
+	free(list->fork_right);
+	free(list);
 }

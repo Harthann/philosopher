@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
+/*   check_meals.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/07 15:31:27 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/03 09:34:09 by nieyraud         ###   ########.fr       */
+/*   Created: 2020/07/03 08:45:04 by nieyraud          #+#    #+#             */
+/*   Updated: 2020/07/08 10:53:53 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	ft_free(t_philo *list, int nb)
+int		check_meal_count(t_status status)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	free(list->status);
-	while (i < nb)
+	while (i < status.philo_count)
 	{
-		// free(list + i);
+		if (status.count_meal[i])
+			return (0);
 		i++;
 	}
-
+	return (1);
 }

@@ -6,13 +6,13 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 17:01:28 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/03/02 12:25:05 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/07 09:59:43 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-int		ft_count_length(long int n)
+int				ft_count_length(long int n)
 {
 	int		length;
 
