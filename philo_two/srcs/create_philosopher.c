@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 10:20:30 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:35:50 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void				meal_set(int *meals, int value, int len)
 {

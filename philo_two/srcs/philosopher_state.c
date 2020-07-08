@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:08:24 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:36:27 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		is_alive(t_philo *philo)
 {

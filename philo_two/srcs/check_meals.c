@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 08:45:04 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 10:53:53 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:35:38 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		check_meal_count(t_status status)
 {

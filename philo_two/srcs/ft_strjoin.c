@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 12:39:07 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/06/30 09:47:46 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:36:12 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

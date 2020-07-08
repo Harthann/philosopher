@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:14:03 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:35:28 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <sys/time.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <semaphore.h>
 # include <errno.h>
 # include <string.h>
 
@@ -62,11 +63,8 @@ typedef struct		s_philo
 	int				number;
 	struct timeval	timestamp;
 	t_status		*status;
-	pthread_mutex_t	*mutex_left;
-	char			*fork_right;
-	pthread_mutex_t	*mutex_right;
-	char			*fork_left;
 	char			state;
+	sem_t			*sem_fork;
 }					t_philo;
 
 int					ft_atoi(char *str);
@@ -93,8 +91,8 @@ int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
 int					check_meal_count(t_status status);
 int					is_alive(t_philo *philo);
-int					mutex_unlock(pthread_mutex_t *mutex, char *state);
-int					mutex_lock(pthread_mutex_t *mutex,
+int					mutex_unlock(sem_t *sem_fork, char *state);
+int					mutex_lock(sem_t *sem_fork,
 							char *state, t_philo *philo);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/07 10:44:24 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:36:31 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	ft_strcpy(char *dest, char *str)
 {

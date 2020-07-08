@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 15:31:27 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:08:04 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:35:57 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	ft_free(t_philo *list)
 {

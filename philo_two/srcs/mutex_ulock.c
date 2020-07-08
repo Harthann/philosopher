@@ -6,13 +6,13 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/07 09:59:32 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 11:35:16 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
-int		mutex_lock(pthread_mutex_t *mutex, char *state, t_philo *philo)
+int		mutex_lock(sem_t *sem_fork, char *state, t_philo *philo)
 {
 	int tmp;
 
@@ -21,16 +21,14 @@ int		mutex_lock(pthread_mutex_t *mutex, char *state, t_philo *philo)
 		usleep(50);
 	if (tmp == 0 || philo->status->simu_state)
 		return (1);
-	pthread_mutex_lock(mutex);
 	*state = 1;
 	return (0);
 }
 
-int		mutex_unlock(pthread_mutex_t *mutex, char *state)
+int		mutex_unlock(sem_t *sem_fork, char *state)
 {
 	int tmp;
 
-	tmp = pthread_mutex_unlock(mutex);
 	*state = 0;
 	return (tmp);
 }
