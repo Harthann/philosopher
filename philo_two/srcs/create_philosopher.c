@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:35:50 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:25:39 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,6 @@ void				create_philosopher(t_philo *philo, int number,
 	philo->status->last_meal[number - 1] = philo->timestamp;
 }
 
-pthread_mutex_t		*init_mutex_table(int length, char **fork_table)
-{
-	pthread_mutex_t	*mutex_table;
-	int				i;
-
-	if (!(mutex_table = malloc(sizeof(pthread_mutex_t) * length)))
-		return (NULL);
-	if (!(*fork_table = malloc(sizeof(char) * length)))
-		return (NULL);
-	memset(*fork_table, 0, length);
-	i = 0;
-	while (i < length)
-	{
-		if (pthread_mutex_init(mutex_table + i, NULL))
-			return (NULL);
-		i++;
-	}
-	return (mutex_table);
-}
-
 t_status			*init_status(int count, t_philo *list, int ac, char *str)
 {
 	t_status *status;
@@ -86,26 +66,20 @@ t_philo				*init_philosopher(char **av, int ac)
 {
 	t_philo			*list;
 	t_status		*status;
-	char			*fork_table;
-	pthread_mutex_t	*mutex_table;
+	sem_t			*tm;
 	int				i;
 
 	i = 0;
-	if (!(mutex_table = init_mutex_table(ft_atoi(av[1]), &fork_table)))
-		return (NULL);
 	if (!(list = malloc(sizeof(t_philo) * ft_atoi(av[1]))))
 		return (NULL);
 	if (!(status = init_status(ft_atoi(av[1]), list, ac, av[5])))
 		return (NULL);
+	if (SEM_FAILED == (tm = sem_open("/semafork", O_CREAT, 0644, status->philo_count)))
+		return (NULL);
 	while (i < status->philo_count)
 	{
-		(list + i)->mutex_right = mutex_table + i;
-		(list + i)->fork_right = fork_table + i;
-		(list + i)->mutex_left = mutex_table;
-		(list + i)->fork_left = fork_table;
-		(list + i)->mutex_left += i + 1 == ft_atoi(av[1]) ? 0 : i + 1;
-		(list + i)->fork_left += i + 1 == ft_atoi(av[1]) ? 0 : i + 1;
 		create_philosopher(list + i, i + 1, av, status);
+		// sem_post(tm);
 		i++;
 	}
 	return (list);

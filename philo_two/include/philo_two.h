@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:35:28 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:28:15 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct		s_philo
 	struct timeval	timestamp;
 	t_status		*status;
 	char			state;
-	sem_t			*sem_fork;
+	sem_t			*semafork;
 }					t_philo;
 
 int					ft_atoi(char *str);
@@ -91,8 +91,8 @@ int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
 int					check_meal_count(t_status status);
 int					is_alive(t_philo *philo);
-int					mutex_unlock(sem_t *sem_fork, char *state);
-int					mutex_lock(sem_t *sem_fork,
+int					sem_unlock(sem_t *semafork, char *state);
+int					sem_lock(sem_t *semafork,
 							char *state, t_philo *philo);
 
 #endif

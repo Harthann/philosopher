@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:36:22 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:29:07 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@ void		take_a_fork(t_philo *philo)
 
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
-	while (is_alive(philo) && *philo->fork_left && !philo->status->simu_state)
+	while (is_alive(philo) && philo->status->simu_state)
 		usleep(50);
 	if (is_alive(philo))
 	{
-		mutex_lock(philo->mutex_left, philo->fork_left, philo);
+		sem_lock(philo->semafork, NULL, philo);
 		print_state(time, philo->number, " has taken a fork \n");
 	}
-	while (is_alive(philo) && *philo->fork_right && !philo->status->simu_state)
+	while (is_alive(philo) && philo->status->simu_state)
 		usleep(50);
 	if (is_alive(philo) && philo->status->simu_state)
 	{
-		mutex_lock(philo->mutex_right, philo->fork_right, philo);
+		sem_lock(philo->semafork, NULL, philo);
 		print_state(time, philo->number, " has taken a fork \n");
 	}
 	else
-		mutex_unlock(philo->mutex_left, philo->fork_left);
+		sem_unlock(philo->semafork, NULL);
 }
 
 void		*philosopher_loop(void *philosopher)
@@ -43,6 +43,8 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
+	if (SEM_FAILED == (philo->semafork = sem_open("/semafork", 0)))
+		return ((void*)-1);
 	while (philo->state != 3 && !philo->status->simu_state)
 	{
 		if (philo->state == 2 || philo->state == 4)
@@ -57,8 +59,8 @@ void		*philosopher_loop(void *philosopher)
 		}
 		else if (philo->state == 1)
 		{
-			mutex_unlock(philo->mutex_right, philo->fork_right);
-			mutex_unlock(philo->mutex_left, philo->fork_left);
+			sem_unlock(philo->semafork, NULL);
+			sem_unlock(philo->semafork, NULL);
 			philo->state = 2;
 			philosopher_sleeping(philo);
 		}

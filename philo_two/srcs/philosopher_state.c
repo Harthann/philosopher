@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:36:27 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:29:21 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int		is_alive(t_philo *philo)
 		print_state(time, philo->number, " died\n");
 		if (philo->state == 1)
 		{
-			pthread_mutex_unlock(philo->mutex_right);
-			pthread_mutex_unlock(philo->mutex_left);
+			sem_unlock(philo->semafork, NULL);
+			sem_unlock(philo->semafork, NULL);
 		}
 		philo->state = 3;
 		return (0);
