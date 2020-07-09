@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 12:25:39 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/09 09:42:49 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_status			*init_status(int count, t_philo *list, int ac, char *str)
 	if ((!(status = malloc(sizeof(t_status)))))
 		return (NULL);
 	status->philo_count = count;
-	status->list = list;
+	list = 0;
 	status->simu_state = 0;
 	if (!(status->count_meal = malloc(sizeof(int) * count)))
 		return (NULL);
@@ -74,13 +74,15 @@ t_philo				*init_philosopher(char **av, int ac)
 		return (NULL);
 	if (!(status = init_status(ft_atoi(av[1]), list, ac, av[5])))
 		return (NULL);
-	if (SEM_FAILED == (tm = sem_open("/semafork", O_CREAT, 0644, status->philo_count)))
+	status->fork_count = status->philo_count;
+	tm = sem_open("/semafork", O_CREAT, 0644, status->fork_count);
+	if (SEM_FAILED == tm)
 		return (NULL);
 	while (i < status->philo_count)
 	{
 		create_philosopher(list + i, i + 1, av, status);
-		// sem_post(tm);
 		i++;
 	}
+	sem_close(tm);
 	return (list);
 }

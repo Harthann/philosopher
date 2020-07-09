@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 12:28:15 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/09 09:48:41 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct		s_status
 	struct timeval	*last_meal;
 	int				*count_meal;
 	int				philo_count;
-	struct s_philo	*list;
+	int				fork_count;
 }					t_status;
 
 /*
@@ -85,14 +85,14 @@ void				create_philosopher(t_philo *philo, int number,
 pthread_mutex_t		*init_mutex_table(int length, char **fork_table);
 t_philo				*init_philosopher(char **av, int ac);
 
+void				fork_inc(sem_t *semafork, int *fork_count);
+void				fork_dec(sem_t *semafork, int *fork_count, t_philo *philo);
+
 void				take_a_fork(t_philo *philo);
 int					philosopher_eating(t_philo *philo);
 int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
 int					check_meal_count(t_status status);
 int					is_alive(t_philo *philo);
-int					sem_unlock(sem_t *semafork, char *state);
-int					sem_lock(sem_t *semafork,
-							char *state, t_philo *philo);
 
 #endif

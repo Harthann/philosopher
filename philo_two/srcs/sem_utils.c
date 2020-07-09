@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sem_ulock.c                                        :+:      :+:    :+:   */
+/*   sem_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 12:21:12 by nieyraud         ###   ########.fr       */
+/*   Created: 2020/07/09 08:53:03 by nieyraud          #+#    #+#             */
+/*   Updated: 2020/07/09 10:18:30 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-int		sem_lock(sem_t *semafork, char *state, t_philo *philo)
+void	fork_dec(sem_t *semafork, int *fork_count, t_philo *philo)
 {
-	int tmp;
+	long			time;
+	struct timeval	start_t;
+	struct timezone tzp;
 
-	tmp = 1;
-
-	while (*state && (tmp = is_alive(philo)) && !philo->status->simu_state)
-		usleep(50);
-	if (tmp == 0 || philo->status->simu_state)
-		return (1);
+	*fork_count -= 1;
 	sem_wait(semafork);
-	state = 0;
-	return (0);
+	gettimeofday(&start_t, &tzp);
+	time = compare_time(start_t, philo->timestamp);
+	print_state(time, philo->number, " has taken a fork \n");
 }
 
-int		sem_unlock(sem_t *semafork, char *state)
+void	fork_inc(sem_t *semafork, int *fork_count)
 {
-	int tmp;
-
-	tmp = 0;
 	sem_post(semafork);
-	state = 0;
-	return (tmp);
+	*fork_count += 1;
 }

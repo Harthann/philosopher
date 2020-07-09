@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 12:29:07 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/09 10:21:17 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,18 @@
 
 void		take_a_fork(t_philo *philo)
 {
-	long			time;
-	struct timeval	start_t;
-	struct timezone tzp;
-
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
-	while (is_alive(philo) && philo->status->simu_state)
+	while (is_alive(philo) && !philo->status->simu_state
+			&& philo->status->fork_count < 2)
 		usleep(50);
-	if (is_alive(philo))
-	{
-		sem_lock(philo->semafork, NULL, philo);
-		print_state(time, philo->number, " has taken a fork \n");
-	}
-	while (is_alive(philo) && philo->status->simu_state)
+	if (is_alive(philo) && !philo->status->simu_state)
+		fork_dec(philo->semafork, &philo->status->fork_count, philo);
+	while (is_alive(philo) && !philo->status->simu_state
+			&& philo->status->fork_count < 1)
 		usleep(50);
-	if (is_alive(philo) && philo->status->simu_state)
-	{
-		sem_lock(philo->semafork, NULL, philo);
-		print_state(time, philo->number, " has taken a fork \n");
-	}
+	if (is_alive(philo) && !philo->status->simu_state)
+		fork_dec(philo->semafork, &philo->status->fork_count, philo);
 	else
-		sem_unlock(philo->semafork, NULL);
+		fork_inc(philo->semafork, &philo->status->fork_count);
 }
 
 void		*philosopher_loop(void *philosopher)
@@ -48,23 +38,17 @@ void		*philosopher_loop(void *philosopher)
 	while (philo->state != 3 && !philo->status->simu_state)
 	{
 		if (philo->state == 2 || philo->state == 4)
-		{
-			philo->state = 0;
 			philosopher_thinking(philo);
-		}
 		else if (philo->state == 0)
-		{
-			philo->state = 1;
 			philosopher_eating(philo);
-		}
 		else if (philo->state == 1)
 		{
-			sem_unlock(philo->semafork, NULL);
-			sem_unlock(philo->semafork, NULL);
-			philo->state = 2;
+			fork_inc(philo->semafork, &philo->status->fork_count);
+			fork_inc(philo->semafork, &philo->status->fork_count);
 			philosopher_sleeping(philo);
 		}
 	}
+	sem_close(philo->semafork);
 	return (NULL);
 }
 

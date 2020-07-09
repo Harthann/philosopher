@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 12:29:21 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/09 10:21:34 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int		is_alive(t_philo *philo)
 		print_state(time, philo->number, " died\n");
 		if (philo->state == 1)
 		{
-			sem_unlock(philo->semafork, NULL);
-			sem_unlock(philo->semafork, NULL);
+			sem_post(philo->semafork);
+			sem_post(philo->semafork);
 		}
 		philo->state = 3;
 		return (0);
@@ -46,6 +46,7 @@ int		philosopher_eating(t_philo *philo)
 	struct timeval	tp;
 	struct timezone tzp;
 
+	philo->state = 1;
 	gettimeofday(&start_t, &tzp);
 	philo->status->last_meal[philo->number - 1] = start_t;
 	time = compare_time(start_t, philo->timestamp);
@@ -70,6 +71,7 @@ int		philosopher_sleeping(t_philo *philo)
 	struct timeval	tp;
 	struct timezone tzp;
 
+	philo->state = 2;
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
@@ -88,6 +90,7 @@ int		philosopher_thinking(t_philo *philo)
 	struct timezone tzp;
 	struct timeval	start_t;
 
+	philo->state = 0;
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is thinking\n");
