@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/11 09:34:29 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/11 10:09:50 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 void		take_a_fork(t_philo *philo)
 {
-	// while (is_alive(philo) && !philo->status->simu_state
-			// && philo->status->fork_count < 2)
-		// usleep(50);
 	if (is_alive(philo) && !philo->status->simu_state)
 		fork_dec(philo->semafork, &philo->status->fork_count, philo);
-	while (philo->status->philo_count <= 1 && is_alive(philo) && !philo->status->simu_state)
+	while (philo->status->philo_count <= 1 && is_alive(philo)
+			&& !philo->status->simu_state)
 		usleep(50);
 	if (is_alive(philo) && !philo->status->simu_state)
 		fork_dec(philo->semafork, &philo->status->fork_count, philo);
@@ -32,6 +30,7 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
+	sem_post(philo->semafork);
 	while (philo->state != 3 && !philo->status->simu_state)
 	{
 		if (philo->state == 2 || philo->state == 4)
@@ -76,7 +75,6 @@ int			main_simu(t_philo *list, int nb)
 	{
 		pthread_create(&thread_list[i], NULL,
 						fork_launcher, (void*)(list + i));
-		// usleep(400);
 		i++;
 	}
 	while (i >= 0)
@@ -96,9 +94,10 @@ int			main(int ac, char **av)
 	if (ac != 5 && ac != 6)
 		return (1);
 	ret = 0;
-	if (!(list = init_philosopher(av, ac)))
+	if (!(list = init_philosopher(av, ac)) || check_validity(list))
 	{
 		write(1, "initialisation failed!\n", 24);
+		ft_free(list);
 		return (1);
 	}
 	ret = main_simu(list, ft_atoi(av[1]));

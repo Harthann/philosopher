@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/11 09:19:12 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/11 10:14:02 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,19 +72,15 @@ t_philo				*init_philosopher(char **av, int ac)
 		return (NULL);
 	status->fork_count = status->philo_count;
 	tm = sem_open("/semafork", O_CREAT, 0777, 0);
-	if (SEM_FAILED == tm)
-		return (NULL);
 	while (i < status->philo_count)
 	{
-		sem_post(tm);
 		(list + i)->semafork = tm;
 		if (ac == 6)
-			(list + i)->count_meal = ft_atoi(av[5]);
+			(list + i)->count_meal = ft_atoi(av[5]) >= 0 ? ft_atoi(av[5]) : -2;
 		else
 			(list + i)->count_meal = -1;
 		create_philosopher(list + i, i + 1, av, status);
 		i++;
 	}
-	// sem_close(tm);
 	return (list);
 }

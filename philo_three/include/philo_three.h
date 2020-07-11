@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/11 08:48:49 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/11 10:10:08 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void				create_philosopher(t_philo *philo, int number,
 									char **av, t_status *status);
 pthread_mutex_t		*init_mutex_table(int length, char **fork_table);
 t_philo				*init_philosopher(char **av, int ac);
+int					check_validity(t_philo *list);
 
 void				fork_inc(sem_t *semafork, int *fork_count);
 void				fork_dec(sem_t *semafork, int *fork_count, t_philo *philo);
