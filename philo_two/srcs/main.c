@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/09 10:21:17 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/11 10:40:52 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,16 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
-	if (SEM_FAILED == (philo->semafork = sem_open("/semafork", 0)))
-		return ((void*)-1);
+	sem_post(philo->semafork);
 	while (philo->state != 3 && !philo->status->simu_state)
 	{
 		if (philo->state == 2 || philo->state == 4)
 			philosopher_thinking(philo);
 		else if (philo->state == 0)
-			philosopher_eating(philo);
+		{
+			if (philosopher_eating(philo))
+				return (NULL);
+		}
 		else if (philo->state == 1)
 		{
 			fork_inc(philo->semafork, &philo->status->fork_count);
@@ -48,7 +50,6 @@ void		*philosopher_loop(void *philosopher)
 			philosopher_sleeping(philo);
 		}
 	}
-	sem_close(philo->semafork);
 	return (NULL);
 }
 
@@ -81,7 +82,7 @@ int			main(int ac, char **av)
 
 	if (ac != 5 && ac != 6)
 		return (1);
-	if (!(list = init_philosopher(av, ac)))
+	if (!(list = init_philosopher(av, ac)) || check_validity(list))
 	{
 		write(1, "initialisation failed!\n", 24);
 		return (1);
