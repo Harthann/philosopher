@@ -6,7 +6,7 @@
 #    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/07/09 08:58:10 by nieyraud         ###   ########.fr        #
+#    Updated: 2020/07/09 10:48:31 by nieyraud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ vertfonce='\033[0;32m'
 vertclair='\033[1;32m'
 rouge='\033[31m'
 
-NAME = philo_two
+NAME = philo_three
 
 SRCS = main.c ft_atoi.c compare_time.c philosopher_state.c \
 		print_state.c ft_strjoin.c ft_strlen.c ft_memcpy.c ft_ultoa.c \
@@ -31,7 +31,7 @@ SRCS_PATH = srcs
 OBJS_PATH = objs
 OBJS = ${addprefix $(OBJS_PATH)/, $(SRCS:%.c=%.o)}
 
-HEADER = philo_two.h
+HEADER = philo_three.h
 INCLUDE = include
 
 FLAGS = -Wall -Wextra

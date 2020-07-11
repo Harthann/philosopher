@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/09 10:21:34 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/11 09:20:14 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 int		is_alive(t_philo *philo)
 {
@@ -57,10 +57,14 @@ int		philosopher_eating(t_philo *philo)
 		gettimeofday(&tp, &tzp);
 		time = compare_time(tp, start_t);
 	}
-	if (philo->status->count_meal[philo->number - 1] > 0)
-		philo->status->count_meal[philo->number - 1]--;
-	if (check_meal_count(*philo->status))
-		philo->status->simu_state = 1;
+	if (philo->count_meal > 0)
+		philo->count_meal--;
+	if (philo->count_meal == 0)
+	{
+		sem_post(philo->semafork);
+		sem_post(philo->semafork);
+		return (1);
+	}
 	return (0);
 }
 

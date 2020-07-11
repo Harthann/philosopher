@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 08:53:03 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/09 10:18:30 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/11 09:20:21 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 void	fork_dec(sem_t *semafork, int *fork_count, t_philo *philo)
 {

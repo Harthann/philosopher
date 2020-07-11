@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/09 09:48:41 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/11 08:48:49 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_TWO_H
-# define PHILO_TWO_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
 # include <sys/time.h>
 # include <unistd.h>
@@ -42,7 +42,6 @@ typedef struct		s_status
 {
 	int				simu_state;
 	struct timeval	*last_meal;
-	int				*count_meal;
 	int				philo_count;
 	int				fork_count;
 }					t_status;
@@ -61,6 +60,7 @@ typedef struct		s_philo
 	long			tte;
 	long			tts;
 	int				number;
+	int				count_meal;
 	struct timeval	timestamp;
 	t_status		*status;
 	char			state;
