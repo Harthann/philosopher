@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:53:45 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/12 08:34:58 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@
 typedef struct		s_status
 {
 	int				simu_state;
-	struct timeval	*last_meal;
-	int				*count_meal;
 	int				philo_count;
-	struct s_philo	*list;
 }					t_status;
 
 /*
@@ -66,6 +63,8 @@ typedef struct		s_philo
 	char			*fork_right;
 	pthread_mutex_t	*mutex_right;
 	char			*fork_left;
+	int				count_meal;
+	struct timeval	last_meal;
 	char			state;
 }					t_philo;
 
@@ -86,12 +85,12 @@ void				create_philosopher(t_philo *philo, int number,
 									char **av, t_status *status);
 pthread_mutex_t		*init_mutex_table(int length, char **fork_table);
 t_philo				*init_philosopher(char **av, int ac);
+int					check_validity(t_philo *list);
 
 void				take_a_fork(t_philo *philo);
 int					philosopher_eating(t_philo *philo);
 int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
-int					check_meal_count(t_status status);
 int					is_alive(t_philo *philo);
 int					mutex_unlock(pthread_mutex_t *mutex, char *state);
 int					mutex_lock(pthread_mutex_t *mutex,

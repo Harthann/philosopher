@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:07:38 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/12 08:45:30 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		take_a_fork(t_philo *philo)
 	}
 	while (is_alive(philo) && *philo->fork_right && !philo->status->simu_state)
 		usleep(50);
-	if (is_alive(philo) && philo->status->simu_state)
+	if (is_alive(philo) && !philo->status->simu_state)
 	{
 		mutex_lock(philo->mutex_right, philo->fork_right, philo);
 		print_state(time, philo->number, " has taken a fork \n");
@@ -46,20 +46,16 @@ void		*philosopher_loop(void *philosopher)
 	while (philo->state != 3 && !philo->status->simu_state)
 	{
 		if (philo->state == 2 || philo->state == 4)
-		{
-			philo->state = 0;
 			philosopher_thinking(philo);
-		}
 		else if (philo->state == 0)
 		{
-			philo->state = 1;
-			philosopher_eating(philo);
+			if (philosopher_eating(philo))
+				return (NULL);
 		}
 		else if (philo->state == 1)
 		{
 			mutex_unlock(philo->mutex_right, philo->fork_right);
 			mutex_unlock(philo->mutex_left, philo->fork_left);
-			philo->state = 2;
 			philosopher_sleeping(philo);
 		}
 	}
@@ -95,7 +91,7 @@ int			main(int ac, char **av)
 
 	if (ac != 5 && ac != 6)
 		return (1);
-	if (!(list = init_philosopher(av, ac)))
+	if (!(list = init_philosopher(av, ac)) || check_validity(list))
 	{
 		write(1, "initialisation failed!\n", 24);
 		return (1);

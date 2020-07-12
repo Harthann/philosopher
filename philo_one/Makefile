@@ -6,7 +6,7 @@
 #    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/07/08 10:55:07 by nieyraud         ###   ########.fr        #
+#    Updated: 2020/07/12 08:34:50 by nieyraud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ NAME = philo_one
 
 SRCS = main.c ft_atoi.c compare_time.c philosopher_state.c \
 		print_state.c ft_strjoin.c ft_strlen.c ft_memcpy.c ft_ultoa.c \
-		create_philosopher.c ft_free.c ft_ultox.c check_meals.c \
-		mutex_ulock.c
+		create_philosopher.c ft_free.c ft_ultox.c \
+		mutex_ulock.c check_validity.c
 
 SRCS_PATH = srcs
 OBJS_PATH = objs

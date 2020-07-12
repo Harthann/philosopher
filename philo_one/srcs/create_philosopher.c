@@ -6,21 +6,23 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/11 09:19:46 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/12 08:31:25 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void				meal_set(int *meals, int value, int len)
+void				set_forks(t_philo *philo, pthread_mutex_t *mutex_table,
+								char *fork_table, int i)
 {
-	int i;
-
-	i = 0;
-	while (i < len)
+	if (mutex_table && fork_table && philo)
 	{
-		meals[i] = value;
-		i++;
+		philo->mutex_right = mutex_table + i;
+		philo->fork_right = fork_table + i;
+		philo->mutex_left = mutex_table;
+		philo->fork_left = fork_table;
+		philo->mutex_left += i + 1 == philo->status->philo_count ? 0 : i + 1;
+		philo->fork_left += i + 1 == philo->status->philo_count ? 0 : i + 1;
 	}
 }
 
@@ -36,7 +38,7 @@ void				create_philosopher(t_philo *philo, int number,
 	philo->state = 4;
 	philo->status = status;
 	gettimeofday(&philo->timestamp, &tzp);
-	philo->status->last_meal[number - 1] = philo->timestamp;
+	philo->last_meal = philo->timestamp;
 }
 
 pthread_mutex_t		*init_mutex_table(int length, char **fork_table)
@@ -45,7 +47,10 @@ pthread_mutex_t		*init_mutex_table(int length, char **fork_table)
 	int				i;
 
 	if (!(mutex_table = malloc(sizeof(pthread_mutex_t) * length)))
+	{
+		*fork_table = NULL;
 		return (NULL);
+	}
 	if (!(*fork_table = malloc(sizeof(char) * length)))
 		return (NULL);
 	memset(*fork_table, 0, length);
@@ -59,7 +64,7 @@ pthread_mutex_t		*init_mutex_table(int length, char **fork_table)
 	return (mutex_table);
 }
 
-t_status			*init_status(int count, t_philo *list, int ac, char *str)
+t_status			*init_status(int count)
 {
 	t_status *status;
 
@@ -68,19 +73,7 @@ t_status			*init_status(int count, t_philo *list, int ac, char *str)
 	if ((!(status = malloc(sizeof(t_status)))))
 		return (NULL);
 	status->philo_count = count;
-	status->list = list;
 	status->simu_state = 0;
-	if (!(status->count_meal = malloc(sizeof(int) * count)))
-		return (NULL);
-	if (ac == 6)
-		meal_set(status->count_meal, ft_atoi(str), sizeof(int));
-	else
-		meal_set(status->count_meal, -1, count);
-	if (!(status->last_meal = malloc(sizeof(struct timeval) * count)))
-	{
-		free(status);
-		return (NULL);
-	}
 	return (status);
 }
 
@@ -93,21 +86,17 @@ t_philo				*init_philosopher(char **av, int ac)
 	int				i;
 
 	i = 0;
-	if (!(mutex_table = init_mutex_table(ft_atoi(av[1]), &fork_table)))
-		return (NULL);
-	if (!(list = malloc(sizeof(t_philo) * ft_atoi(av[1]))))
-		return (NULL);
-	if (!(status = init_status(ft_atoi(av[1]), list, ac, av[5])))
-		return (NULL);
-	while (i < status->philo_count)
+	mutex_table = init_mutex_table(ft_atoi(av[1]), &fork_table);
+	list = malloc(sizeof(t_philo) * ft_atoi(av[1]));
+	status = init_status(ft_atoi(av[1]));
+	while (list && i < status->philo_count)
 	{
-		(list + i)->mutex_right = mutex_table + i;
-		(list + i)->fork_right = fork_table + i;
-		(list + i)->mutex_left = mutex_table;
-		(list + i)->fork_left = fork_table;
-		(list + i)->mutex_left += i + 1 == ft_atoi(av[1]) ? 0 : i + 1;
-		(list + i)->fork_left += i + 1 == ft_atoi(av[1]) ? 0 : i + 1;
+		if (ac == 6)
+			(list + i)->count_meal = ft_atoi(av[5]) >= 0 ? ft_atoi(av[5]) : -2;
+		else
+			(list + i)->count_meal = -1;
 		create_philosopher(list + i, i + 1, av, status);
+		set_forks(list + i, mutex_table, fork_table, i);
 		i++;
 	}
 	return (list);

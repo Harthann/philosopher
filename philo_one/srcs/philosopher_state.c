@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:08:24 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/07/12 08:42:54 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		is_alive(t_philo *philo)
 	if (philo->state == 3)
 		return (0);
 	gettimeofday(&tp, &tzp);
-	tmp = compare_time(tp, philo->status->last_meal[philo->number - 1]);
+	tmp = compare_time(tp, philo->last_meal);
 	time = compare_time(tp, philo->timestamp);
 	if (tmp >= philo->ttd)
 	{
@@ -46,8 +46,9 @@ int		philosopher_eating(t_philo *philo)
 	struct timeval	tp;
 	struct timezone tzp;
 
+	philo->state = 1;
 	gettimeofday(&start_t, &tzp);
-	philo->status->last_meal[philo->number - 1] = start_t;
+	philo->last_meal = start_t;
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is eating\n");
 	time = 0;
@@ -56,10 +57,10 @@ int		philosopher_eating(t_philo *philo)
 		gettimeofday(&tp, &tzp);
 		time = compare_time(tp, start_t);
 	}
-	if (philo->status->count_meal[philo->number - 1] > 0)
-		philo->status->count_meal[philo->number - 1]--;
-	if (check_meal_count(*philo->status))
-		philo->status->simu_state = 1;
+	if (philo->count_meal > 0)
+		philo->count_meal--;
+	if (philo->count_meal == 0)
+		return (1);
 	return (0);
 }
 
@@ -70,6 +71,7 @@ int		philosopher_sleeping(t_philo *philo)
 	struct timeval	tp;
 	struct timezone tzp;
 
+	philo->state = 2;
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
@@ -88,6 +90,7 @@ int		philosopher_thinking(t_philo *philo)
 	struct timezone tzp;
 	struct timeval	start_t;
 
+	philo->state = 0;
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is thinking\n");
