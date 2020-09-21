@@ -6,23 +6,20 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/12 08:31:25 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/21 15:21:10 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void				set_forks(t_philo *philo, pthread_mutex_t *mutex_table,
-								char *fork_table, int i)
+void				set_forks(t_philo *philo,
+							pthread_mutex_t *mutex_table, int i)
 {
-	if (mutex_table && fork_table && philo)
+	if (mutex_table && philo)
 	{
 		philo->mutex_right = mutex_table + i;
-		philo->fork_right = fork_table + i;
 		philo->mutex_left = mutex_table;
-		philo->fork_left = fork_table;
 		philo->mutex_left += i + 1 == philo->status->philo_count ? 0 : i + 1;
-		philo->fork_left += i + 1 == philo->status->philo_count ? 0 : i + 1;
 	}
 }
 
@@ -41,19 +38,13 @@ void				create_philosopher(t_philo *philo, int number,
 	philo->last_meal = philo->timestamp;
 }
 
-pthread_mutex_t		*init_mutex_table(int length, char **fork_table)
+pthread_mutex_t		*init_mutex_table(int length)
 {
 	pthread_mutex_t	*mutex_table;
 	int				i;
 
 	if (!(mutex_table = malloc(sizeof(pthread_mutex_t) * length)))
-	{
-		*fork_table = NULL;
 		return (NULL);
-	}
-	if (!(*fork_table = malloc(sizeof(char) * length)))
-		return (NULL);
-	memset(*fork_table, 0, length);
 	i = 0;
 	while (i < length)
 	{
@@ -81,14 +72,16 @@ t_philo				*init_philosopher(char **av, int ac)
 {
 	t_philo			*list;
 	t_status		*status;
-	char			*fork_table;
 	pthread_mutex_t	*mutex_table;
 	int				i;
 
 	i = 0;
-	mutex_table = init_mutex_table(ft_atoi(av[1]), &fork_table);
+	mutex_table = init_mutex_table(ft_atoi(av[1]));
 	list = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	status = init_status(ft_atoi(av[1]));
+	if (!(g_printing = malloc(sizeof(pthread_mutex_t))))
+		return (NULL);
+	pthread_mutex_init(g_printing, NULL);
 	while (list && i < status->philo_count)
 	{
 		if (ac == 6)
@@ -96,7 +89,7 @@ t_philo				*init_philosopher(char **av, int ac)
 		else
 			(list + i)->count_meal = -1;
 		create_philosopher(list + i, i + 1, av, status);
-		set_forks(list + i, mutex_table, fork_table, i);
+		set_forks(list + i, mutex_table, i);
 		i++;
 	}
 	return (list);

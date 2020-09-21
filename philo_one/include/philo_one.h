@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/12 08:34:58 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/21 15:21:19 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 **######################################################
 */
 
+
 typedef struct		s_status
 {
 	int				simu_state;
@@ -51,6 +52,9 @@ typedef struct		s_status
 ** fork = 0 : fork unlock	fork = 1 : fork lock
 */
 
+pthread_mutex_t *g_printing;
+
+
 typedef struct		s_philo
 {
 	long			ttd;
@@ -60,9 +64,7 @@ typedef struct		s_philo
 	struct timeval	timestamp;
 	t_status		*status;
 	pthread_mutex_t	*mutex_left;
-	char			*fork_right;
 	pthread_mutex_t	*mutex_right;
-	char			*fork_left;
 	int				count_meal;
 	struct timeval	last_meal;
 	char			state;
@@ -83,7 +85,7 @@ void				ft_free(t_philo *list);
 
 void				create_philosopher(t_philo *philo, int number,
 									char **av, t_status *status);
-pthread_mutex_t		*init_mutex_table(int length, char **fork_table);
+pthread_mutex_t		*init_mutex_table(int length);
 t_philo				*init_philosopher(char **av, int ac);
 int					check_validity(t_philo *list);
 

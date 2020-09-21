@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 10:04:34 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/12 08:37:53 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/21 15:22:19 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int		check_validity(t_philo *list)
 	while (i < list->status->philo_count)
 	{
 		if (!(list + i)->mutex_right || !(list + i)->mutex_left)
-			return (1);
-		if (!(list + i)->fork_right || !(list + i)->fork_left)
 			return (1);
 		i++;
 	}

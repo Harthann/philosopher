@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/12 08:45:30 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/21 16:22:30 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,21 @@ void		take_a_fork(t_philo *philo)
 
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
-	while (is_alive(philo) && *philo->fork_left && !philo->status->simu_state)
-		usleep(50);
+	pthread_mutex_lock(philo->mutex_right);
 	if (is_alive(philo))
 	{
-		mutex_lock(philo->mutex_left, philo->fork_left, philo);
+		gettimeofday(&start_t, &tzp);
+		time = compare_time(start_t, philo->timestamp);
 		print_state(time, philo->number, " has taken a fork \n");
 	}
-	while (is_alive(philo) && *philo->fork_right && !philo->status->simu_state)
-		usleep(50);
-	if (is_alive(philo) && !philo->status->simu_state)
+
+	pthread_mutex_lock(philo->mutex_left);
+	if (is_alive(philo))
 	{
-		mutex_lock(philo->mutex_right, philo->fork_right, philo);
+		gettimeofday(&start_t, &tzp);
+		time = compare_time(start_t, philo->timestamp);
 		print_state(time, philo->number, " has taken a fork \n");
 	}
-	else
-		mutex_unlock(philo->mutex_left, philo->fork_left);
 }
 
 void		*philosopher_loop(void *philosopher)
@@ -43,22 +42,26 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
+	if (philo->number %2)
+		usleep(60);
 	while (philo->state != 3 && !philo->status->simu_state)
 	{
-		if (philo->state == 2 || philo->state == 4)
+		if ((philo->state == 2 || philo->state == 4) && philo->number)
 			philosopher_thinking(philo);
-		else if (philo->state == 0)
+		else if (philo->state == 0 || philo->state == 4)
 		{
 			if (philosopher_eating(philo))
-				return (NULL);
+				break ;
 		}
 		else if (philo->state == 1)
 		{
-			mutex_unlock(philo->mutex_right, philo->fork_right);
-			mutex_unlock(philo->mutex_left, philo->fork_left);
+			pthread_mutex_unlock(philo->mutex_left);
+			pthread_mutex_unlock(philo->mutex_right);
 			philosopher_sleeping(philo);
 		}
 	}
+	pthread_mutex_unlock(philo->mutex_left);
+	pthread_mutex_unlock(philo->mutex_right);
 	return (NULL);
 }
 

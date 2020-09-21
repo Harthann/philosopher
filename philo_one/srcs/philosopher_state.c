@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/12 08:42:54 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/21 16:32:17 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int		philosopher_sleeping(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
-	struct timeval	tp;
 	struct timezone tzp;
 
 	philo->state = 2;
@@ -76,11 +75,10 @@ int		philosopher_sleeping(t_philo *philo)
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
 	time = 0;
-	while (is_alive(philo) && time < philo->tts && !philo->status->simu_state)
-	{
-		gettimeofday(&tp, &tzp);
-		time = compare_time(tp, start_t);
-	}
+	if (philo->tts > philo->ttd)
+		usleep(philo->ttd * 1000);
+	else
+		usleep(philo->tts * 1000);
 	return (0);
 }
 
