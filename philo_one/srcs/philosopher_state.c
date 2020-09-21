@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/21 16:32:17 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/21 16:37:00 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		philosopher_eating(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
-	struct timeval	tp;
+	// struct timeval	tp;
 	struct timezone tzp;
 
 	philo->state = 1;
@@ -52,11 +52,15 @@ int		philosopher_eating(t_philo *philo)
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is eating\n");
 	time = 0;
-	while (is_alive(philo) && time < philo->tte && !philo->status->simu_state)
-	{
-		gettimeofday(&tp, &tzp);
-		time = compare_time(tp, start_t);
-	}
+	// while (is_alive(philo) && time < philo->tte && !philo->status->simu_state)
+	// {
+	// 	gettimeofday(&tp, &tzp);
+	// 	time = compare_time(tp, start_t);
+	// }
+	if (philo->tte > philo->ttd)
+		usleep(philo->ttd * 1000);
+	else
+		usleep(philo->tte * 1000);
 	if (philo->count_meal > 0)
 		philo->count_meal--;
 	if (philo->count_meal == 0)
