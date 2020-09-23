@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/21 16:22:30 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/23 10:12:27 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void		take_a_fork(t_philo *philo)
 
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
-	pthread_mutex_lock(philo->mutex_right);
+	pthread_mutex_lock(philo->mutex_left);
 	if (is_alive(philo))
 	{
 		gettimeofday(&start_t, &tzp);
@@ -28,7 +28,7 @@ void		take_a_fork(t_philo *philo)
 		print_state(time, philo->number, " has taken a fork \n");
 	}
 
-	pthread_mutex_lock(philo->mutex_left);
+	pthread_mutex_lock(philo->mutex_right);
 	if (is_alive(philo))
 	{
 		gettimeofday(&start_t, &tzp);
@@ -42,22 +42,23 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
-	if (philo->number %2)
-		usleep(60);
-	while (philo->state != 3 && !philo->status->simu_state)
+	// if (!(philo->number % 2))
+	// 	usleep(60);
+	while (!philo->status->simu_state && philo->count_meal)
 	{
-		if ((philo->state == 2 || philo->state == 4) && philo->number)
+		if (philo->state == 2)
 			philosopher_thinking(philo);
-		else if (philo->state == 0 || philo->state == 4)
+		else if (philo->state == 0)
 		{
 			if (philosopher_eating(philo))
 				break ;
 		}
-		else if (philo->state == 1)
+		else if (philo->state == 1 || philo->state == 4)
 		{
 			pthread_mutex_unlock(philo->mutex_left);
 			pthread_mutex_unlock(philo->mutex_right);
-			philosopher_sleeping(philo);
+			if (philosopher_sleeping(philo))
+				break;
 		}
 	}
 	pthread_mutex_unlock(philo->mutex_left);
@@ -103,3 +104,4 @@ int			main(int ac, char **av)
 	ft_free(list);
 	return (0);
 }
+// 

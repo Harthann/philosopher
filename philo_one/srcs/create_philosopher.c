@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/21 15:21:10 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/23 09:29:45 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void				create_philosopher(t_philo *philo, int number,
 	philo->tte = ft_atoi(av[3]);
 	philo->tts = ft_atoi(av[4]);
 	philo->number = number;
-	philo->state = 4;
+	philo->state = number % 2 ? 2 : 4;
 	philo->status = status;
 	gettimeofday(&philo->timestamp, &tzp);
 	philo->last_meal = philo->timestamp;
