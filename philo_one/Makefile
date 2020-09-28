@@ -6,7 +6,7 @@
 #    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/09/23 10:10:08 by nieyraud         ###   ########.fr        #
+#    Updated: 2020/09/28 11:12:31 by nieyraud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ OBJS = ${addprefix $(OBJS_PATH)/, $(SRCS:%.c=%.o)}
 HEADER = philo_one.h
 INCLUDE = include
 
-FLAGS = -Wall -Wextra -flto
+FLAGS = -Wall -Wextra -flto -g3
 CC = clang
 
 all: $(NAME)

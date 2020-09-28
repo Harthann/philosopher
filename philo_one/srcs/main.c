@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/23 10:12:27 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/28 10:47:49 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,27 +42,29 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
+	
+	philosopher_thinking(philo);
 	// if (!(philo->number % 2))
 	// 	usleep(60);
-	while (!philo->status->simu_state && philo->count_meal)
-	{
-		if (philo->state == 2)
-			philosopher_thinking(philo);
-		else if (philo->state == 0)
-		{
-			if (philosopher_eating(philo))
-				break ;
-		}
-		else if (philo->state == 1 || philo->state == 4)
-		{
-			pthread_mutex_unlock(philo->mutex_left);
-			pthread_mutex_unlock(philo->mutex_right);
-			if (philosopher_sleeping(philo))
-				break;
-		}
-	}
-	pthread_mutex_unlock(philo->mutex_left);
-	pthread_mutex_unlock(philo->mutex_right);
+	// while (philo->status->simu_state != -1
+	// 	&& philo->status->simu_state != philo->status->philo_count
+	// 	&& philo->count_meal)
+	// {
+	// 	if (philo->state == 2)
+	// 		philosopher_thinking(philo);
+	// 	else if (philo->state == 0)
+	// 	{
+	// 		if (philosopher_eating(philo))
+	// 			break ;
+	// 	}
+	// 	else if (philo->state == 1 || philo->state == 4)
+	// 	{
+	// 		if (philosopher_sleeping(philo))
+	// 			break;
+	// 	}
+	// }
+	if (!philo->count_meal)
+		philo->status->simu_state += 1;
 	return (NULL);
 }
 
@@ -80,11 +82,8 @@ int			main_simu(t_philo *list, int nb)
 						philosopher_loop, (void*)(list + i));
 		i++;
 	}
-	while (i >= 0)
-	{
-		pthread_join(thread_list[i], NULL);
-		i--;
-	}
+	while (list->status->simu_state != -1 && list->status->simu_state != nb)
+		;
 	free(thread_list);
 	return (0);
 }
