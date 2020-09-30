@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/28 11:01:58 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:22:16 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 /*
 ** Simu state : 0 = running, 1 : ended;
 */
+
 /*
 **######################################################
 **######################################################
@@ -37,6 +38,7 @@
 **######################################################
 */
 
+pthread_mutex_t *g_printing;
 
 typedef struct		s_status
 {
@@ -51,8 +53,6 @@ typedef struct		s_status
 ** state : 0 = think, 1 = eat, 2 = sleep, 3 = dead, 4 = pending
 ** fork = 0 : fork unlock	fork = 1 : fork lock
 */
-
-pthread_mutex_t *g_printing;
 
 
 typedef struct		s_philo
@@ -94,8 +94,6 @@ int					philosopher_eating(t_philo *philo);
 int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
 int					is_alive(t_philo *philo);
-int					mutex_unlock(pthread_mutex_t *mutex, char *state);
-int					mutex_lock(pthread_mutex_t *mutex,
-							char *state, t_philo *philo);
+void				my_sleep(t_philo *philo);
 
 #endif

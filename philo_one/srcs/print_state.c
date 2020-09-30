@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/23 09:54:06 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:20:32 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	ft_strcpy(char *dest, char *str)
 
 void	add_numb(char *str, long nb)
 {
-	int i;
-	long tmp;
+	int		i;
+	long	tmp;
 
 	tmp = nb;
 	i = 0;
@@ -57,6 +57,5 @@ void	print_state(long timestamp, int number, char *str)
 	to_print[ft_strlen(to_print)] = ' ';
 	ft_strcpy(to_print + ft_strlen(to_print), str);
 	write(1, to_print, ft_strlen(to_print));
-
 	pthread_mutex_unlock(g_printing);
 }
