@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:31:42 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:01:53 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		is_alive(t_philo *philo)
 {
@@ -49,8 +49,8 @@ int		philosopher_eating(t_philo *philo)
 	my_sleep(philo);
 	if (philo->count_meal > 0)
 		philo->count_meal--;
-	pthread_mutex_unlock(philo->mutex_left);
-	pthread_mutex_unlock(philo->mutex_right);
+	sem_post(philo->semafork);
+	sem_post(philo->semafork);
 	if (!philo->count_meal)
 		return (1);
 	return (philosopher_sleeping(philo));

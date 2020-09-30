@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:22:16 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:07:59 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <sys/time.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <semaphore.h>
 # include <errno.h>
 # include <string.h>
 
@@ -38,7 +39,7 @@
 **######################################################
 */
 
-pthread_mutex_t *g_printing;
+sem_t *g_semaprint;
 
 typedef struct		s_status
 {
@@ -63,8 +64,7 @@ typedef struct		s_philo
 	int				number;
 	struct timeval	timestamp;
 	t_status		*status;
-	pthread_mutex_t	*mutex_left;
-	pthread_mutex_t	*mutex_right;
+	sem_t			*semafork;
 	int				count_meal;
 	struct timeval	last_meal;
 	char			state;

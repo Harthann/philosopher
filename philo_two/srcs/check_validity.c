@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 10:04:34 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:16:41 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 11:06:35 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		check_validity(t_philo *list)
 {
@@ -22,11 +22,5 @@ int		check_validity(t_philo *list)
 		return (1);
 	if (list->count_meal == -2)
 		return (1);
-	while (i < list->status->philo_count)
-	{
-		if (!(list + i)->mutex_right || !(list + i)->mutex_left)
-			return (1);
-		i++;
-	}
 	return (0);
 }
