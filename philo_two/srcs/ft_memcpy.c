@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 10:40:22 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/08 11:36:06 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/06/30 09:47:39 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_one.h"
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {

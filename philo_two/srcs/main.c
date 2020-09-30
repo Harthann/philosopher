@@ -6,26 +6,32 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/11 10:40:52 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:43:57 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_one.h"
 
 void		take_a_fork(t_philo *philo)
 {
-	while (is_alive(philo) && !philo->status->simu_state
-			&& philo->status->fork_count < 2)
-		usleep(50);
-	if (is_alive(philo) && !philo->status->simu_state)
-		fork_dec(philo->semafork, &philo->status->fork_count, philo);
-	while (is_alive(philo) && !philo->status->simu_state
-			&& philo->status->fork_count < 1)
-		usleep(50);
-	if (is_alive(philo) && !philo->status->simu_state)
-		fork_dec(philo->semafork, &philo->status->fork_count, philo);
-	else
-		fork_inc(philo->semafork, &philo->status->fork_count);
+	long			time;
+	struct timeval	start_t;
+	struct timezone tzp;
+
+	gettimeofday(&start_t, &tzp);
+	time = compare_time(start_t, philo->timestamp);
+	pthread_mutex_lock(philo->mutex_left);
+	if (!is_alive(philo))
+		return ;
+	gettimeofday(&start_t, &tzp);
+	time = compare_time(start_t, philo->timestamp);
+	print_state(time, philo->number, " has taken a fork \n");
+	if (!is_alive(philo))
+		return ;
+	pthread_mutex_lock(philo->mutex_right);
+	gettimeofday(&start_t, &tzp);
+	time = compare_time(start_t, philo->timestamp);
+	print_state(time, philo->number, " has taken a fork \n");
 }
 
 void		*philosopher_loop(void *philosopher)
@@ -33,23 +39,12 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
-	sem_post(philo->semafork);
-	while (philo->state != 3 && !philo->status->simu_state)
-	{
-		if (philo->state == 2 || philo->state == 4)
-			philosopher_thinking(philo);
-		else if (philo->state == 0)
-		{
-			if (philosopher_eating(philo))
-				return (NULL);
-		}
-		else if (philo->state == 1)
-		{
-			fork_inc(philo->semafork, &philo->status->fork_count);
-			fork_inc(philo->semafork, &philo->status->fork_count);
-			philosopher_sleeping(philo);
-		}
-	}
+	if (philo->number % 2)
+		philosopher_thinking(philo);
+	else
+		philosopher_sleeping(philo);
+	if (!philo->count_meal)
+		philo->status->simu_state += 1;
 	return (NULL);
 }
 
@@ -67,11 +62,8 @@ int			main_simu(t_philo *list, int nb)
 						philosopher_loop, (void*)(list + i));
 		i++;
 	}
-	while (i >= 0)
-	{
-		pthread_join(thread_list[i], NULL);
-		i--;
-	}
+	while (list->status->simu_state != -1 && list->status->simu_state != nb)
+		;
 	free(thread_list);
 	return (0);
 }
@@ -89,5 +81,7 @@ int			main(int ac, char **av)
 	}
 	main_simu(list, ft_atoi(av[1]));
 	ft_free(list);
+	while (1)
+		;
 	return (0);
 }

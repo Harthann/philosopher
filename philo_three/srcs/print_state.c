@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/11 09:13:12 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:20:32 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_three.h"
+#include "philo_one.h"
 
 void	ft_strcpy(char *dest, char *str)
 {
@@ -24,20 +24,38 @@ void	ft_strcpy(char *dest, char *str)
 	}
 }
 
+void	add_numb(char *str, long nb)
+{
+	int		i;
+	long	tmp;
+
+	tmp = nb;
+	i = 0;
+	while (tmp > 9)
+	{
+		tmp /= 10;
+		i++;
+	}
+	while (i)
+	{
+		str[i] = nb % 10 + '0';
+		nb /= 10;
+		i--;
+	}
+	str[i] = nb % 10 + '0';
+}
+
 void	print_state(long timestamp, int number, char *str)
 {
-	char	*tmp;
 	char	to_print[4080];
 
+	pthread_mutex_lock(g_printing);
 	memset(to_print, 0, 4080);
-	tmp = ft_ultoa(timestamp);
-	ft_strcpy(to_print, tmp);
+	add_numb(to_print, timestamp);
 	to_print[ft_strlen(to_print)] = ' ';
-	free(tmp);
-	tmp = ft_ultoa(number);
-	ft_strcpy(to_print + ft_strlen(to_print), tmp);
-	to_print[ft_strlen(to_print) + 1] = ' ';
-	free(tmp);
+	add_numb(to_print + ft_strlen(to_print), number);
+	to_print[ft_strlen(to_print)] = ' ';
 	ft_strcpy(to_print + ft_strlen(to_print), str);
 	write(1, to_print, ft_strlen(to_print));
+	pthread_mutex_unlock(g_printing);
 }
