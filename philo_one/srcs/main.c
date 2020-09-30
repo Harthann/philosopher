@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:43:05 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/09/30 10:43:57 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,6 @@ int			main_simu(t_philo *list, int nb)
 	}
 	while (list->status->simu_state != -1 && list->status->simu_state != nb)
 		;
-	// long			time;
-	// struct timeval	start_t;
-	// struct timezone tzp;
-	// gettimeofday(&start_t, &tzp);
-	// time = compare_time(start_t, list->timestamp);
-	// print_state(time, 999, "Simulation ended\n");
 	free(thread_list);
 	return (0);
 }
