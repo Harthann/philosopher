@@ -6,11 +6,18 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 11:49:10 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/01 11:22:23 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
+
+void __attribute__((destructor)) lock(); 
+
+void lock()
+{
+	read(0, NULL, 1);
+}
 
 void		take_a_fork(t_philo *philo)
 {
@@ -18,9 +25,7 @@ void		take_a_fork(t_philo *philo)
 	struct timeval	start_t;
 	struct timezone tzp;
 
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
-	sem_wait(philo->semafork);
+	sem_wait(g_semafork);
 	if (!is_alive(philo))
 		return ;
 	gettimeofday(&start_t, &tzp);
@@ -28,7 +33,7 @@ void		take_a_fork(t_philo *philo)
 	print_state(time, philo->number, " has taken a fork \n");
 	if (!is_alive(philo))
 		return ;
-	sem_wait(philo->semafork);
+	sem_wait(g_semafork);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " has taken a fork \n");
@@ -39,14 +44,12 @@ void		*philosopher_loop(void *philosopher)
 	t_philo *philo;
 
 	philo = philosopher;
-	philo->semafork = sem_open("semafork", O_WRONLY);//, O_CREAT, 0644, philo->status->philo_count);
 	if (philo->number % 2)
 		philosopher_thinking(philo);
 	else
 		philosopher_sleeping(philo);
 	if (!philo->count_meal)
 		philo->status->simu_state += 1;
-	sem_close(philo->semafork);
 	return (NULL);
 }
 
@@ -83,7 +86,7 @@ int			main(int ac, char **av)
 	}
 	main_simu(list, ft_atoi(av[1]));
 	ft_free(list);
-	while (1)
-		;
+	// while (1)
+	// 	;
 	return (0);
 }

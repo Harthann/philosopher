@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:31:42 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/01 10:11:06 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		philosopher_eating(t_philo *philo)
 	time = compare_time(start_t, philo->timestamp);
 	philo->last_meal = start_t;
 	print_state(time, philo->number, " is eating\n");
-	my_sleep(philo);
+	my_sleep(philo, philo->tte);
 	if (philo->count_meal > 0)
 		philo->count_meal--;
 	pthread_mutex_unlock(philo->mutex_left);
@@ -67,7 +67,7 @@ int		philosopher_sleeping(t_philo *philo)
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
-	my_sleep(philo);
+	my_sleep(philo, philo->tts);
 	return (philosopher_thinking(philo));
 }
 

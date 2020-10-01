@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:22:16 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/01 10:11:27 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ int					philosopher_eating(t_philo *philo);
 int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
 int					is_alive(t_philo *philo);
-void				my_sleep(t_philo *philo);
+void				my_sleep(t_philo *philo, long time);
 
 #endif
