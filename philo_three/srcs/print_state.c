@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:20:32 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/01 11:21:37 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	ft_strcpy(char *dest, char *str)
 {
@@ -49,13 +49,12 @@ void	print_state(long timestamp, int number, char *str)
 {
 	char	to_print[4080];
 
-	pthread_mutex_lock(g_printing);
+	sem_wait(g_semaprint);
 	memset(to_print, 0, 4080);
 	add_numb(to_print, timestamp);
 	to_print[ft_strlen(to_print)] = ' ';
 	add_numb(to_print + ft_strlen(to_print), number);
-	to_print[ft_strlen(to_print)] = ' ';
 	ft_strcpy(to_print + ft_strlen(to_print), str);
 	write(1, to_print, ft_strlen(to_print));
-	pthread_mutex_unlock(g_printing);
+	sem_post(g_semaprint);
 }

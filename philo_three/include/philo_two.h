@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:22:16 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:45:12 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 
 # include <sys/time.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <semaphore.h>
 # include <errno.h>
 # include <string.h>
+# include <fcntl.h>
 
 /*
 ** Simu state : 0 = running, 1 : ended;
@@ -38,12 +40,14 @@
 **######################################################
 */
 
-pthread_mutex_t *g_printing;
+sem_t *g_semaprint;
+sem_t *g_semafork;
 
 typedef struct		s_status
 {
 	int				simu_state;
 	int				philo_count;
+	sem_t			*semafork;
 }					t_status;
 
 /*
@@ -54,7 +58,6 @@ typedef struct		s_status
 ** fork = 0 : fork unlock	fork = 1 : fork lock
 */
 
-
 typedef struct		s_philo
 {
 	long			ttd;
@@ -63,8 +66,7 @@ typedef struct		s_philo
 	int				number;
 	struct timeval	timestamp;
 	t_status		*status;
-	pthread_mutex_t	*mutex_left;
-	pthread_mutex_t	*mutex_right;
+	sem_t			*semafork;
 	int				count_meal;
 	struct timeval	last_meal;
 	char			state;
@@ -94,6 +96,6 @@ int					philosopher_eating(t_philo *philo);
 int					philosopher_sleeping(t_philo *philo);
 int					philosopher_thinking(t_philo *philo);
 int					is_alive(t_philo *philo);
-void				my_sleep(t_philo *philo);
+void				my_sleep(t_philo *philo, long time);
 
 #endif

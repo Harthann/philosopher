@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/02 09:16:45 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:47:25 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		is_alive(t_philo *philo)
 		philo->state = 3;
 		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 int		philosopher_eating(t_philo *philo)
@@ -53,8 +53,8 @@ int		philosopher_eating(t_philo *philo)
 	}
 	if (philo->count_meal > 0)
 		philo->count_meal--;
-	sem_post(g_semafork);
-	sem_post(g_semafork);
+	sem_post(philo->status->semafork);
+	sem_post(philo->status->semafork);
 	if (!philo->count_meal || !is_alive(philo))
 		return (0);
 	return (philosopher_sleeping(philo));

@@ -6,16 +6,17 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/02 09:18:14 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:46:59 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-void __attribute__((destructor)) lock(); 
+void __attribute__((destructor)) lock();
 
-void lock()
+void		lock(void)
 {
+	write(2, "Program ended\n", 15);
 	read(0, NULL, 1);
 }
 
@@ -25,7 +26,7 @@ void		take_a_fork(t_philo *philo)
 	struct timeval	start_t;
 	struct timezone tzp;
 
-	sem_wait(g_semafork);
+	sem_wait(philo->status->semafork);
 	if (!is_alive(philo))
 		return ;
 	gettimeofday(&start_t, &tzp);
@@ -33,7 +34,7 @@ void		take_a_fork(t_philo *philo)
 	print_state(time, philo->number, " has taken a fork \n");
 	if (!is_alive(philo))
 		return ;
-	sem_wait(g_semafork);
+	sem_wait(philo->status->semafork);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " has taken a fork \n");

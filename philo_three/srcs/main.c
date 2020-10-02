@@ -6,11 +6,19 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:43:57 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:46:59 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
+
+void __attribute__((destructor)) lock();
+
+void		lock(void)
+{
+	write(2, "Program ended\n", 15);
+	read(0, NULL, 1);
+}
 
 void		take_a_fork(t_philo *philo)
 {
@@ -18,9 +26,7 @@ void		take_a_fork(t_philo *philo)
 	struct timeval	start_t;
 	struct timezone tzp;
 
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
-	pthread_mutex_lock(philo->mutex_left);
+	sem_wait(philo->status->semafork);
 	if (!is_alive(philo))
 		return ;
 	gettimeofday(&start_t, &tzp);
@@ -28,7 +34,7 @@ void		take_a_fork(t_philo *philo)
 	print_state(time, philo->number, " has taken a fork \n");
 	if (!is_alive(philo))
 		return ;
-	pthread_mutex_lock(philo->mutex_right);
+	sem_wait(philo->status->semafork);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " has taken a fork \n");
@@ -81,7 +87,5 @@ int			main(int ac, char **av)
 	}
 	main_simu(list, ft_atoi(av[1]));
 	ft_free(list);
-	while (1)
-		;
 	return (0);
 }
