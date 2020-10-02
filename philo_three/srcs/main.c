@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/02 09:46:59 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 12:37:52 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 void __attribute__((destructor)) lock();
 
@@ -40,52 +40,87 @@ void		take_a_fork(t_philo *philo)
 	print_state(time, philo->number, " has taken a fork \n");
 }
 
-void		*philosopher_loop(void *philosopher)
+int			philosopher_loop(void *philosopher)
 {
 	t_philo *philo;
+	int		ret;
 
 	philo = philosopher;
 	if (philo->number % 2)
-		philosopher_thinking(philo);
+		ret = philosopher_thinking(philo);
 	else
-		philosopher_sleeping(philo);
-	if (!philo->count_meal)
-		philo->status->simu_state += 1;
-	return (NULL);
+		ret = philosopher_sleeping(philo);
+	return(ret);
 }
+
+int			child_killer(pid_t *pid_list, int nb)
+{
+	int i;
+
+	i = 0;
+	while (i < nb)
+	{
+		kill(pid_list[i], SIGQUIT);
+		i++;
+	}
+	free(pid_list);
+	return (0);
+}
+
 
 int			main_simu(t_philo *list, int nb)
 {
-	pthread_t	*thread_list;
 	int			i;
+	pid_t		*pid_list;
+	int			status;
 
-	if (!(thread_list = malloc(sizeof(pthread_t) * nb)))
+	status = 0;
+	if (!(pid_list = malloc(sizeof(pid_t) * nb)))
 		return (0);
 	i = 0;
 	while (i < nb)
 	{
-		pthread_create(&thread_list[i], NULL,
-						philosopher_loop, (void*)(list + i));
+		if (!(pid_list[i] = fork())) {
+			i = philosopher_loop(list + i);
+			// sem_close(list->status->semafork);
+			// sem_close(g_semaprint);
+			// free(list->status);
+			// free(list);
+			free(pid_list);
+			return (i);
+		}
 		i++;
 	}
-	while (list->status->simu_state != -1 && list->status->simu_state != nb)
-		;
-	free(thread_list);
+	i = 0;
+	while(i != nb)
+	{
+		waitpid(0, &status, 0);
+		if (WEXITSTATUS(status) == 255)
+			return (child_killer(pid_list, nb));
+		i++;
+	}
+	free(pid_list);
 	return (0);
 }
 
 int			main(int ac, char **av)
 {
 	t_philo *list;
+	int		ret;
 
 	if (ac != 5 && ac != 6)
 		return (1);
 	if (!(list = init_philosopher(av, ac)) || check_validity(list))
 	{
+		ft_free(list);
 		write(1, "initialisation failed!\n", 24);
 		return (1);
 	}
-	main_simu(list, ft_atoi(av[1]));
+	ret = main_simu(list, ft_atoi(av[1]));
 	ft_free(list);
-	return (0);
+	if (ret == 0 || ret != -1) {
+		sem_unlink("/my_semaprint");
+		sem_unlink("/my_semafork");
+	}
+	return (ret);
 }

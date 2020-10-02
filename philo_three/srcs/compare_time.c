@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 10:15:40 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:57:42 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:55:16 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
 
 long	compare_time(struct timeval	tp, struct timeval start_t)
 {

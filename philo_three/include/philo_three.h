@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.h                                        :+:      :+:    :+:   */
+/*   philo_three.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,10 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_TWO_H
-# define PHILO_TWO_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
 # include <sys/time.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <signal.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -41,7 +44,6 @@
 */
 
 sem_t *g_semaprint;
-sem_t *g_semafork;
 
 typedef struct		s_status
 {
@@ -66,7 +68,6 @@ typedef struct		s_philo
 	int				number;
 	struct timeval	timestamp;
 	t_status		*status;
-	sem_t			*semafork;
 	int				count_meal;
 	struct timeval	last_meal;
 	char			state;
