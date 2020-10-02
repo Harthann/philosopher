@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/01 11:22:23 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:18:14 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,5 @@ int			main(int ac, char **av)
 	}
 	main_simu(list, ft_atoi(av[1]));
 	ft_free(list);
-	// while (1)
-	// 	;
 	return (0);
 }

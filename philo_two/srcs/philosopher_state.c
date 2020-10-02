@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/01 11:40:05 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 09:16:45 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		is_alive(t_philo *philo)
 		philo->state = 3;
 		return (0);
 	}
-	return (1);
+	return (0);
 }
 
 int		philosopher_eating(t_philo *philo)
@@ -41,13 +41,10 @@ int		philosopher_eating(t_philo *philo)
 	struct timeval	tmp;
 	struct timezone tzp;
 
-	if (!is_alive(philo))
-		return (1);
 	gettimeofday(&start_t, &tzp);
 	philo->last_meal = start_t;
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is eating\n");
-	// my_sleep(philo, philo->tte);
 	gettimeofday(&tmp, &tzp);
 	while (compare_time(tmp, start_t) < philo->tte)
 	{
@@ -58,8 +55,8 @@ int		philosopher_eating(t_philo *philo)
 		philo->count_meal--;
 	sem_post(g_semafork);
 	sem_post(g_semafork);
-	if (!philo->count_meal)
-		return (1);
+	if (!philo->count_meal || !is_alive(philo))
+		return (0);
 	return (philosopher_sleeping(philo));
 }
 
@@ -70,18 +67,17 @@ int		philosopher_sleeping(t_philo *philo)
 	struct timeval	tmp;
 	struct timezone tzp;
 
-	if (!is_alive(philo))
-		return (1);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
-	// my_sleep(philo, philo->tts);
 	gettimeofday(&tmp, &tzp);
 	while (compare_time(tmp, start_t) < philo->tts)
 	{
 		usleep(1000);
 		gettimeofday(&tmp, &tzp);
 	}
+	if (!is_alive(philo))
+		return (0);
 	return (philosopher_thinking(philo));
 }
 
@@ -91,12 +87,12 @@ int		philosopher_thinking(t_philo *philo)
 	struct timezone tzp;
 	struct timeval	start_t;
 
-	if (!is_alive(philo))
-		return (1);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is thinking\n");
 	philo->state = 0;
 	take_a_fork(philo);
+	if (!is_alive(philo))
+		return (0);
 	return (philosopher_eating(philo));
 }
