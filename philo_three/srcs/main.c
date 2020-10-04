@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/02 12:37:52 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/02 12:45:01 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int			main_simu(t_philo *list, int nb)
 	while (i < nb)
 	{
 		if (!(pid_list[i] = fork())) {
-			i = philosopher_loop(list + i);
+			// i = philosopher_loop(list + i);
+			printf("addres of status from childs : [%p]\n", list->status);
 			// sem_close(list->status->semafork);
 			// sem_close(g_semaprint);
 			// free(list->status);
@@ -92,6 +93,7 @@ int			main_simu(t_philo *list, int nb)
 		i++;
 	}
 	i = 0;
+	printf("addres of status from childs : [%p]\n", list->status);
 	while(i != nb)
 	{
 		waitpid(0, &status, 0);

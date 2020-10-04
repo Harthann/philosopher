@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   my_sleep.c                                         :+:      :+:    :+:   */
+/*   waiters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/01 10:53:39 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/04 13:46:04 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_one.h"
 
-void	my_sleep(t_philo *philo, long time)
+void	my_sleep(long time)
 {
 	struct timeval	tp;
 	struct timezone tzp;
@@ -20,9 +20,15 @@ void	my_sleep(t_philo *philo, long time)
 
 	gettimeofday(&tp, &tzp);
 	tmp = tp;
-	while (is_alive(philo) && compare_time(tmp, tp) < time)
+	while (compare_time(tmp, tp) < time)
 	{
 		usleep(1000);
 		gettimeofday(&tmp, &tzp);
 	}
+}
+
+void	wait_start(t_philo philo)
+{
+	while (!philo.status->started)
+		;
 }

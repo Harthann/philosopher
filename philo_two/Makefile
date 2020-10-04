@@ -6,7 +6,7 @@
 #    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/10/01 11:10:59 by nieyraud         ###   ########.fr        #
+#    Updated: 2020/10/04 12:20:30 by nieyraud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME = philo_two
 
 SRCS = main.c ft_atoi.c compare_time.c philosopher_state.c \
 		print_state.c ft_strlen.c create_philosopher.c ft_free.c \
-		my_sleep.c check_validity.c
+		waiters.c check_validity.c
 
 SRCS_PATH = srcs
 OBJS_PATH = objs

@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/02 09:41:33 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/04 12:00:26 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void				create_philosopher(t_philo *philo, int number,
 	philo->tte = ft_atoi(av[3]);
 	philo->tts = ft_atoi(av[4]);
 	philo->number = number;
-	philo->state = number % 2 ? 2 : 4;
 	philo->status = status;
 	gettimeofday(&philo->timestamp, &tzp);
 	philo->last_meal = philo->timestamp;
@@ -37,6 +36,7 @@ t_status			*init_status(int count)
 		return (NULL);
 	status->philo_count = count;
 	status->simu_state = 0;
+	status->started = 0;
 	sem_unlink("/my_semafork");
 	status->semafork = sem_open("/my_semafork", O_CREAT, 0644, count);
 	return (status);
