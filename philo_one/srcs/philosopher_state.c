@@ -6,13 +6,13 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/04 13:46:35 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/05 10:49:13 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void		*philosopher_loop(void *philosopher)
+void	*philosopher_loop(void *philosopher)
 {
 	t_philo *philo;
 

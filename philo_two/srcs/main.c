@@ -6,19 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/04 13:42:56 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/05 11:02:40 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
-
-// void __attribute__((destructor)) lock();
-
-void		lock(void)
-{
-	write(2, "Program ended\n", 15);
-	read(0, NULL, 1);
-}
 
 int			take_a_fork(t_philo *philo)
 {
@@ -59,8 +51,9 @@ void		*philosopher_vitals(void *philosopher)
 		time = compare_time(start_t, philo->last_meal);
 		if (time > philo->ttd)
 		{
-	    	print_state(compare_time(start_t, philo->timestamp), philo->number, " died\n");
-	    	philo->status->simu_state = -1;
+			print_state(compare_time(start_t, philo->timestamp),
+									philo->number, " died\n");
+			philo->status->simu_state = -1;
 		}
 		usleep(philo->ttd);
 	}
@@ -72,18 +65,13 @@ int			main_simu(t_philo *list, int nb)
 	pthread_t	*thread_list;
 	int			i;
 
-	if (!(thread_list = malloc(sizeof(pthread_t) * ( 2 * nb))))
+	if (!(thread_list = malloc(sizeof(pthread_t) * (2 * nb))))
 		return (0);
 	i = 0;
 	while (i < nb)
 	{
 		pthread_create(&thread_list[i], NULL,
 						philosopher_vitals, (void*)(list + i));
-		i++;
-	}
-	i = 0;
-	while (i < nb)
-	{
 		pthread_create(&thread_list[i + nb], NULL,
 						philosopher_loop, (void*)(list + i));
 		i++;

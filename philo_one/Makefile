@@ -6,7 +6,7 @@
 #    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/10/04 12:20:30 by nieyraud         ###   ########.fr        #
+#    Updated: 2020/10/05 10:10:59 by nieyraud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ vertfonce='\033[0;32m'
 vertclair='\033[1;32m'
 rouge='\033[31m'
 
-NAME = philo_two
+NAME = philo_one
 
 SRCS = main.c ft_atoi.c compare_time.c philosopher_state.c \
 		print_state.c ft_strlen.c create_philosopher.c ft_free.c \

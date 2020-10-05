@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/04 13:45:49 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/05 10:49:35 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct		s_status
 ** state : 0 = think, 1 = eat, 2 = sleep, 3 = dead, 4 = pending
 ** fork = 0 : fork unlock	fork = 1 : fork lock
 */
-
 
 typedef struct		s_philo
 {

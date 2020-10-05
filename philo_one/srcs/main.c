@@ -6,21 +6,13 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/04 13:59:12 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/05 10:48:28 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-// void __attribute__((destructor)) lock();
-
-void		lock(void)
-{
-	write(2, "Program ended\n", 15);
-	read(0, NULL, 1);
-}
-
-int		take_a_fork(t_philo *philo)
+int			take_a_fork(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
@@ -41,28 +33,26 @@ int		take_a_fork(t_philo *philo)
 	return (0);
 }
 
-void            *philosopher_vitals(void *philosopher)
+void		*philosopher_vitals(void *philosopher)
 {
 	t_philo			*philo;
 	long			time;
 	struct timeval	start_t;
-	struct timezone	tzp;
 
 	philo = (t_philo*)philosopher;
 	wait_start(*philo);
-	gettimeofday(&philo->timestamp, NULL);
-	philo->last_meal = philo->timestamp;
 	while (philo->status->simu_state != -1
 			&& philo->status->simu_state != philo->status->philo_count)
 	{
-		gettimeofday(&start_t, &tzp);
+		usleep(philo->ttd);
+		gettimeofday(&start_t, NULL);
 		time = compare_time(start_t, philo->last_meal);
 		if (time > philo->ttd)
 		{
-	    	print_state(compare_time(start_t, philo->timestamp), philo->number, " died\n");
-	    	philo->status->simu_state = -1;
+			print_state(compare_time(start_t, philo->timestamp),
+									philo->number, " died\n");
+			philo->status->simu_state = -1;
 		}
-		usleep(philo->ttd);
 	}
 	return (0);
 }
@@ -72,7 +62,7 @@ int			main_simu(t_philo *list, int nb)
 	pthread_t	*thread_list;
 	int			i;
 
-	if (!(thread_list = malloc(sizeof(pthread_t) * ( 2 * nb))))
+	if (!(thread_list = malloc(sizeof(pthread_t) * (2 * nb))))
 		return (0);
 	i = 0;
 	while (i < nb)

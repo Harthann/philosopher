@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/04 12:02:01 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/05 10:57:33 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void	my_sleep(long time)
 void	wait_start(t_philo philo)
 {
 	while (!philo.status->started)
-		;
+		usleep(1000);
 }
