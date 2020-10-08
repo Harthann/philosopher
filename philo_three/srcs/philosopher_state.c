@@ -6,31 +6,28 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/02 12:06:22 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/08 14:19:30 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-int		is_alive(t_philo *philo)
+int		philosopher_loop(void *philosopher)
 {
-	long			tmp;
-	long			time;
-	struct timeval	tp;
-	struct timezone tzp;
+	t_philo			*philo;
+	pthread_t		vitals;
+	struct timeval	start_t;
+	int ret;
 
-	if (philo->state == 3)
-		return (0);
-	gettimeofday(&tp, &tzp);
-	tmp = compare_time(tp, philo->last_meal);
-	if (tmp >= philo->ttd)
-	{
-		time = compare_time(tp, philo->timestamp);
-		print_state(time, philo->number, " died\n");
-		philo->state = 3;
-		return (0);
-	}
-	return (1);
+	philo = philosopher;
+	pthread_create(&vitals, NULL, philosopher_vitals, philosopher);
+	if (philo->number % 2)
+		ret = philosopher_thinking(philo);
+	else
+		ret = philosopher_sleeping(philo);
+	if (ret == 1)
+		return (255);
+	return (0);
 }
 
 int		philosopher_eating(t_philo *philo)
@@ -44,20 +41,19 @@ int		philosopher_eating(t_philo *philo)
 	philo->last_meal = start_t;
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is eating\n");
-	gettimeofday(&tmp, &tzp);
+	tmp = start_t;
 	while (compare_time(tmp, start_t) < philo->tte)
 	{
 		usleep(1000);
 		gettimeofday(&tmp, &tzp);
 	}
-	if (philo->count_meal > 0)
-		philo->count_meal--;
+	philo->count_meal--;
+	if (philo->count_meal == 0)
+		sem_post(philo->status->finished_meal);
 	sem_post(philo->status->semafork);
 	sem_post(philo->status->semafork);
-	if (!philo->count_meal)
-		return (0);
-	if (!is_alive(philo))
-		return (-1);
+	if (philo->status->simu_state == -1)
+		return (1);
 	return (philosopher_sleeping(philo));
 }
 
@@ -71,14 +67,12 @@ int		philosopher_sleeping(t_philo *philo)
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
-	gettimeofday(&tmp, &tzp);
+	tmp = start_t;
 	while (compare_time(tmp, start_t) < philo->tts)
 	{
 		usleep(1000);
 		gettimeofday(&tmp, &tzp);
 	}
-	if (!is_alive(philo))
-		return (-1);
 	return (philosopher_thinking(philo));
 }
 
@@ -91,9 +85,7 @@ int		philosopher_thinking(t_philo *philo)
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is thinking\n");
-	philo->state = 0;
-	take_a_fork(philo);
-	if (!is_alive(philo))
-		return (-1);
+	if (take_a_fork(philo))
+		return (1);
 	return (philosopher_eating(philo));
 }

@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 10:04:34 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/02 12:46:29 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/05 11:06:56 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		check_validity(t_philo *list)
 		|| list->tte < 0 || list->tts < 0)
 		return (1);
 	if (list->count_meal == -2
-		|| list->status->semafork == SEM_FAILED
+		|| g_semafork == SEM_FAILED
 		|| g_semaprint == SEM_FAILED)
 		return (1);
 	return (0);

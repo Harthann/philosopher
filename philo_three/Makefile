@@ -6,7 +6,7 @@
 #    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/10/02 12:29:08 by nieyraud         ###   ########.fr        #
+#    Updated: 2020/10/05 11:06:42 by nieyraud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ NAME = philo_three
 
 SRCS = main.c ft_atoi.c compare_time.c philosopher_state.c \
 		print_state.c ft_strlen.c create_philosopher.c ft_free.c \
-		my_sleep.c check_validity.c
+		waiters.c check_validity.c
 
 SRCS_PATH = srcs
 OBJS_PATH = objs
@@ -34,7 +34,6 @@ HEADER = philo_three.h
 INCLUDE = include
 
 FLAGS = -Wall -Wextra
-SANIFLAGS = -g3 -fsanitize=address
 CC = clang
 
 all: $(NAME)
@@ -46,10 +45,6 @@ $(NAME): $(INCLUDE) $(OBJS)
 $(OBJS_PATH)/%.o: $(SRCS_PATH)/%.c
 	@$(CC) $(FLAGS) -c -o $@ -I $(INCLUDE) $<
 	@/bin/echo -n "."
-
-sanitize : $(INCLUDE) $(OBJS)
-	@$(CC) ${SANIFLAGS} $(OBJS) -I $(INCLUDE) -lpthread -o ${NAME}
-	@echo '\n'$(vertclair)$(NAME) "Compiled" $(neutre)
 
 clean:
 	@rm -rf $(OBJS)
