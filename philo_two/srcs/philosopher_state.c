@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/05 10:59:37 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/12 09:59:24 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	*philosopher_loop(void *philosopher)
 {
 	t_philo			*philo;
-	struct timeval	start_t;
-	long			time;
 
 	philo = philosopher;
 	wait_start(*philo);

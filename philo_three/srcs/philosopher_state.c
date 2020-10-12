@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/08 14:19:30 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/12 10:14:12 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int		philosopher_loop(void *philosopher)
 {
 	t_philo			*philo;
 	pthread_t		vitals;
-	struct timeval	start_t;
-	int ret;
+	int				ret;
 
 	philo = philosopher;
 	pthread_create(&vitals, NULL, philosopher_vitals, philosopher);

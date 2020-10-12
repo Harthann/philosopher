@@ -6,13 +6,13 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/08 14:38:57 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/12 10:25:16 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-int			take_a_fork(t_philo *philo)
+int		take_a_fork(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
@@ -33,7 +33,7 @@ int			take_a_fork(t_philo *philo)
 	return (0);
 }
 
-void		*philosopher_vitals(void *philosopher)
+void	*philosopher_vitals(void *philosopher)
 {
 	t_philo			*philo;
 	long			time;
@@ -42,8 +42,6 @@ void		*philosopher_vitals(void *philosopher)
 	int				i;
 
 	philo = (t_philo*)philosopher;
-	gettimeofday(&philo->timestamp, NULL);
-	philo->last_meal = philo->timestamp;
 	i = 0;
 	while (philo->status->simu_state != -1)
 	{
@@ -73,9 +71,10 @@ void	child_killer(pid_t *pid_list, int nb)
 		kill(pid_list[i], SIGQUIT);
 		i++;
 	}
+	free(pid_list);
 }
 
-int			main_simu(t_philo *list, int nb)
+int		main_simu(t_philo *list, int nb)
 {
 	int			i;
 	pid_t		*pid_list;
@@ -87,24 +86,21 @@ int			main_simu(t_philo *list, int nb)
 	i = 0;
 	while (i < nb)
 	{
-		if (!(pid_list[i] = fork())) {
-			i = philosopher_loop(list + i);
-			return (i);
-		}
+		if (!(pid_list[i] = fork()))
+			return (philosopher_loop(list + i));
 		i++;
 	}
 	i = 0;
-	while(i != nb)
+	while (i != nb)
 	{
 		sem_wait(list->status->finished_meal);
 		i++;
 	}
 	child_killer(pid_list, nb);
-	free(pid_list);
 	return (0);
 }
 
-int			main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_philo *list;
 
