@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/05 10:48:28 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/10/28 10:11:49 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,18 @@ void		*philosopher_vitals(void *philosopher)
 	return (0);
 }
 
+void		join_thread(pthread_t *thread_list, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb)
+	{
+		pthread_join(thread_list[i], NULL);
+		i++;
+	}
+}
+
 int			main_simu(t_philo *list, int nb)
 {
 	pthread_t	*thread_list;
@@ -76,6 +88,7 @@ int			main_simu(t_philo *list, int nb)
 	list->status->started = 1;
 	while (list->status->simu_state != -1 && list->status->simu_state != nb)
 		;
+	join_thread(thread_list, nb);
 	free(thread_list);
 	return (0);
 }
