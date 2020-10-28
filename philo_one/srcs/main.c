@@ -65,6 +65,7 @@ void		join_thread(pthread_t *thread_list, int nb)
 	while (i < nb)
 	{
 		pthread_join(thread_list[i], NULL);
+		pthread_join(thread_list[i + nb], NULL);
 		i++;
 	}
 }

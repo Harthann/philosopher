@@ -34,6 +34,8 @@ int		philosopher_eating(t_philo *philo)
 	struct timeval	tmp;
 	struct timezone tzp;
 
+	if (philo->status->simu_state == -1 || philo->status->simu_state == philo->status->philo_count)
+		return (1);
 	gettimeofday(&start_t, &tzp);
 	philo->last_meal = start_t;
 	time = compare_time(start_t, philo->timestamp);
@@ -61,7 +63,8 @@ int		philosopher_sleeping(t_philo *philo)
 	struct timeval	tmp;
 	struct timezone tzp;
 
-	gettimeofday(&start_t, &tzp);
+	if (philo->status->simu_state == -1 || philo->status->simu_state == philo->status->philo_count)
+		return (1);gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
 	tmp = start_t;
@@ -79,6 +82,8 @@ int		philosopher_thinking(t_philo *philo)
 	struct timezone tzp;
 	struct timeval	start_t;
 
+	if (philo->status->simu_state == -1 || philo->status->simu_state == philo->status->philo_count)
+		return (1);
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is thinking\n");
