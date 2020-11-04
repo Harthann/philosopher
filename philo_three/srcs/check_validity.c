@@ -21,8 +21,9 @@ int		check_validity(t_philo *list)
 		|| list->tte < 0 || list->tts < 0)
 		return (1);
 	if (list->count_meal == -2
-		|| g_semafork == SEM_FAILED
-		|| g_semaprint == SEM_FAILED)
+		|| list->status->semafork == SEM_FAILED
+		|| g_semaprint == SEM_FAILED
+		|| list->status->finished_meal == SEM_FAILED)
 		return (1);
 	return (0);
 }

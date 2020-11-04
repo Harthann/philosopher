@@ -37,9 +37,7 @@ t_status			*init_status(int count)
 	status->philo_count = count;
 	status->simu_state = 0;
 	status->started = 0;
-	sem_unlink("/my_semafork");
 	status->semafork = sem_open("/my_semafork", O_CREAT, 0644, count);
-	sem_unlink("/my_finished_meal");
 	status->finished_meal = sem_open("/my_finished_meal", O_CREAT, 0644, 0);
 	return (status);
 }
@@ -51,9 +49,11 @@ t_philo				*init_philosopher(char **av, int ac)
 	int				i;
 
 	i = 0;
+	sem_unlink("/my_semafork");
+	sem_unlink("/my_finished_meal");
+	sem_unlink("/my_semaprint");
 	list = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	status = init_status(ft_atoi(av[1]));
-	sem_unlink("/my_semaprint");
 	g_semaprint = sem_open("/my_semaprint", O_CREAT, 0644, 1);
 	while (list && i < status->philo_count)
 	{
