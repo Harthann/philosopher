@@ -22,8 +22,6 @@ void	*philosopher_loop(void *philosopher)
 		philosopher_thinking(philo);
 	else
 		philosopher_sleeping(philo);
-	if (!philo->count_meal)
-		philo->status->simu_state += 1;
 	return (NULL);
 }
 
@@ -49,7 +47,8 @@ int		philosopher_eating(t_philo *philo)
 		philo->status->simu_state += 1;
 	pthread_mutex_unlock(philo->mutex_left);
 	pthread_mutex_unlock(philo->mutex_right);
-	if (philo->status->simu_state == -1)
+	if (philo->status->simu_state == -1
+	|| philo->status->simu_state == philo->status->philo_count)
 		return (1);
 	return (philosopher_sleeping(philo));
 }
