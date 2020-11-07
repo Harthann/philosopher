@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
+#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/10/05 10:10:59 by nieyraud         ###   ########.fr        #
+#    Updated: 2020/11/07 15:26:45 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ $(NAME): $(INCLUDE) $(OBJS)
 	@echo '\n'$(vertclair)$(NAME) "Compiled" $(neutre)
 
 $(OBJS_PATH)/%.o: $(SRCS_PATH)/%.c
+	@mkdir -p objs/
 	@$(CC) $(FLAGS) -c -o $@ -I $(INCLUDE) $<
 	@/bin/echo -n "."
 
