@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher_state.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/05 10:49:13 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/11/07 15:17:56 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ int		philosopher_sleeping(t_philo *philo)
 		usleep(1000);
 		gettimeofday(&tmp, &tzp);
 	}
+	if (philo->status->simu_state == -1
+	|| philo->status->simu_state == philo->status->philo_count)
+		return (1);
 	return (philosopher_thinking(philo));
 }
 
@@ -82,6 +85,9 @@ int		philosopher_thinking(t_philo *philo)
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is thinking\n");
 	if (take_a_fork(philo))
+		return (1);
+	if (philo->status->simu_state == -1
+	|| philo->status->simu_state == philo->status->philo_count)
 		return (1);
 	return (philosopher_eating(philo));
 }
