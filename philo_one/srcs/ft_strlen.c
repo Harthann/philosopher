@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 12:40:01 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/07 10:14:57 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/07 11:05:28 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned	ft_strlen(char *str)
+unsigned int	ft_strlen(char *str)
 {
-	unsigned i;
+	unsigned int	i;
 
 	i = 0;
 	while (str[i])

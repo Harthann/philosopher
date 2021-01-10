@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   create_philosopher.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/04 13:45:28 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/08 08:58:19 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void				set_forks(t_philo *philo,
-							pthread_mutex_t *mutex_table, int i)
+void	set_forks(t_philo *philo, pthread_mutex_t *mutex_table, int i)
 {
 	if (mutex_table && philo)
 	{
 		philo->mutex_right = mutex_table + i;
 		philo->mutex_left = mutex_table;
-		philo->mutex_left += i + 1 == philo->status->philo_count ? 0 : i + 1;
+		if (i + 1 == philo->status->philo_count)
+			philo->mutex_left += 1;
 	}
 }
 
-void				create_philosopher(t_philo *philo, int number,
-										char **av, t_status *status)
+void	create_philosopher(t_philo *philo, int number
+							, char **av, t_status *status)
 {
-	struct timezone tzp;
+	struct timezone	tzp;
 
 	philo->ttd = ft_atoi(av[2]);
 	philo->tte = ft_atoi(av[3]);
@@ -37,12 +37,13 @@ void				create_philosopher(t_philo *philo, int number,
 	philo->last_meal = philo->timestamp;
 }
 
-pthread_mutex_t		*init_mutex_table(int length)
+pthread_mutex_t	*init_mutex_table(int length)
 {
 	pthread_mutex_t	*mutex_table;
 	int				i;
 
-	if (!(mutex_table = malloc(sizeof(pthread_mutex_t) * length)))
+	mutex_table = malloc(sizeof(pthread_mutex_t) * length);
+	if (!mutex_table)
 		return (NULL);
 	i = 0;
 	while (i < length)
@@ -54,13 +55,14 @@ pthread_mutex_t		*init_mutex_table(int length)
 	return (mutex_table);
 }
 
-t_status			*init_status(int count)
+t_status	*init_status(int count)
 {
-	t_status *status;
+	t_status	*status;
 
 	if (count <= 0)
 		return (NULL);
-	if ((!(status = malloc(sizeof(t_status)))))
+	status = malloc(sizeof(t_status));
+	if (!status)
 		return (NULL);
 	status->philo_count = count;
 	status->simu_state = 0;
@@ -68,7 +70,7 @@ t_status			*init_status(int count)
 	return (status);
 }
 
-t_philo				*init_philosopher(char **av, int ac)
+t_philo	*init_philosopher(char **av, int ac)
 {
 	t_philo			*list;
 	t_status		*status;
@@ -79,13 +81,16 @@ t_philo				*init_philosopher(char **av, int ac)
 	mutex_table = init_mutex_table(ft_atoi(av[1]));
 	list = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	status = init_status(ft_atoi(av[1]));
-	if (!(g_printing = malloc(sizeof(pthread_mutex_t))))
+	g_printing = malloc(sizeof(pthread_mutex_t));
+	if (!g_printing)
 		return (NULL);
 	pthread_mutex_init(g_printing, NULL);
 	while (list && i < status->philo_count)
 	{
-		if (ac == 6)
-			(list + i)->count_meal = ft_atoi(av[5]) >= 0 ? ft_atoi(av[5]) : -2;
+		if (ac == 6 && ft_atoi(av[5]) >= 0)
+			(list + i)->count_meal = ft_atoi(av[5]);
+		else if (ac == 6)
+			(list + i)->count_meal = -2;
 		else
 			(list + i)->count_meal = -1;
 		create_philosopher(list + i, i + 1, av, status);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/12 10:25:16 by nieyraud         ###   ########.fr       */
+/*   Updated: 2020/11/17 16:00:02 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	*philosopher_vitals(void *philosopher)
 		{
 			print_state(compare_time(start_t, philo->timestamp),
 									philo->number, " died\n");
+			sem_wait(g_semaprint);
 			philo->status->simu_state = -1;
 			while (i++ < philo->status->philo_count)
 				sem_post(philo->status->finished_meal);

@@ -30,7 +30,7 @@ SRCS_PATH = srcs
 OBJS_PATH = objs
 OBJS = ${addprefix $(OBJS_PATH)/, $(SRCS:%.c=%.o)}
 
-HEADER = philo_two.h
+HEADER = philo_one.h
 INCLUDE = include
 
 FLAGS = -Wall -Wextra

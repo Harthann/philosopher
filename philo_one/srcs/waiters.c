@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   waiters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/05 10:08:47 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/07 11:06:06 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	my_sleep(long time)
 {
 	struct timeval	tp;
-	struct timezone tzp;
+	struct timezone	tzp;
 	struct timeval	tmp;
 
 	gettimeofday(&tp, &tzp);

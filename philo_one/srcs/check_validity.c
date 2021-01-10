@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   check_validity.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 10:04:34 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:16:41 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/07 11:06:30 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-int		check_validity(t_philo *list)
+int	check_validity(t_philo *list)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!list || !list->status || list->ttd < 0

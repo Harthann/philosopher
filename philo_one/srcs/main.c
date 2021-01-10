@@ -6,17 +6,17 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/11/09 09:19:25 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/08 08:43:48 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-int			take_a_fork(t_philo *philo)
+int	take_a_fork(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
-	struct timezone tzp;
+	struct timezone	tzp;
 
 	pthread_mutex_lock(philo->mutex_left);
 	if (philo->status->simu_state == -1)
@@ -33,7 +33,7 @@ int			take_a_fork(t_philo *philo)
 	return (0);
 }
 
-void		*philosopher_vitals(void *philosopher)
+void	*philosopher_vitals(void *philosopher)
 {
 	t_philo			*philo;
 	long			time;
@@ -42,7 +42,7 @@ void		*philosopher_vitals(void *philosopher)
 	philo = (t_philo*)philosopher;
 	wait_start(*philo);
 	while (philo->status->simu_state != -1
-			&& philo->status->simu_state != philo->status->philo_count)
+		&& philo->status->simu_state != philo->status->philo_count)
 	{
 		usleep(philo->ttd);
 		gettimeofday(&start_t, NULL);
@@ -57,12 +57,13 @@ void		*philosopher_vitals(void *philosopher)
 	return (0);
 }
 
-int			main_simu(t_philo *list, int nb)
+int	main_simu(t_philo *list, int nb)
 {
 	pthread_t	*thread_list;
 	int			i;
 
-	if (!(thread_list = malloc(sizeof(pthread_t) * (2 * nb))))
+	thread_list = malloc(sizeof(pthread_t) * (2 * nb));
+	if (!thread_list)
 		return (0);
 	i = 0;
 	while (i < nb)
@@ -80,13 +81,14 @@ int			main_simu(t_philo *list, int nb)
 	return (0);
 }
 
-int			main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_philo *list;
+	t_philo	*list;
 
 	if (ac != 5 && ac != 6)
 		return (1);
-	if (!(list = init_philosopher(av, ac)) || check_validity(list))
+	list = init_philosopher(av, ac);
+	if (!list || check_validity(list))
 	{
 		write(1, "initialisation failed!\n", 24);
 		return (1);
