@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 09:10:05 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 15:09:13 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void	*philosopher_vitals(void *philosopher)
 	while (philo->status->simu_state != -1
 		&& philo->status->simu_state != philo->status->philo_count)
 	{
-		usleep(philo->ttd);
+		// usleep(philo->ttd);
+		usleep(1000);
+		pthread_mutex_lock(&philo->action);
 		gettimeofday(&start_t, NULL);
 		time = compare_time(start_t, philo->last_meal);
 		if (time > philo->ttd)
@@ -53,6 +55,7 @@ void	*philosopher_vitals(void *philosopher)
 									philo->number, " died\n");
 			philo->status->simu_state = -1;
 		}
+		pthread_mutex_unlock(&philo->action);
 	}
 	return (0);
 }

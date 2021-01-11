@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_state.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/07 11:07:25 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/11 14:31:17 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void	add_numb(char *str, long nb)
 
 void	print_state(long timestamp, int number, char *str)
 {
-	char	to_print[4080];
+	char	to_print[100];
 
 	pthread_mutex_lock(g_printing);
-	memset(to_print, 0, 4080);
+	memset(to_print, 0, 100);
 	add_numb(to_print, timestamp);
 	to_print[ft_strlen(to_print)] = ' ';
 	add_numb(to_print + ft_strlen(to_print), number);

@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 09:36:06 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 15:03:53 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_philo
 	int				count_meal;
 	struct timeval	timestamp;
 	t_status		*status;
+	pthread_mutex_t	action;
 }					t_philo;
 
 int				ft_atoi(char *str);

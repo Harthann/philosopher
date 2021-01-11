@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 09:27:47 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 15:09:30 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,9 @@ int	philosopher_eating(t_philo *philo)
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is eating\n");
 	tmp = start_t;
-	while (compare_time(tmp, start_t) < philo->tte)
-	{
-		usleep(1000);
-		gettimeofday(&tmp, &tzp);
-	}
+	pthread_mutex_lock(&philo->action);
+	my_sleep(philo->tte);
+	pthread_mutex_unlock(&philo->action);
 	philo->count_meal--;
 	if (philo->count_meal == 0)
 		philo->status->simu_state += 1;
@@ -64,11 +62,7 @@ int	philosopher_sleeping(t_philo *philo)
 	time = compare_time(start_t, philo->timestamp);
 	print_state(time, philo->number, " is sleeping\n");
 	tmp = start_t;
-	while (compare_time(tmp, start_t) < philo->tts)
-	{
-		usleep(1000);
-		gettimeofday(&tmp, &tzp);
-	}
+	my_sleep(philo->tts);
 	if (philo->status->simu_state == -1
 		|| philo->status->simu_state == philo->status->philo_count)
 		return (1);
