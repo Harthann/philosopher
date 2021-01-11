@@ -6,16 +6,16 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/08 14:05:03 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 13:01:30 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-void				create_philosopher(t_philo *philo, int number,
-										char **av, t_status *status)
+void	create_philosopher(t_philo *philo, int number
+									, char **av, t_status *status)
 {
-	struct timezone tzp;
+	struct timezone	tzp;
 
 	philo->ttd = ft_atoi(av[2]);
 	philo->tte = ft_atoi(av[3]);
@@ -26,13 +26,14 @@ void				create_philosopher(t_philo *philo, int number,
 	philo->last_meal = philo->timestamp;
 }
 
-t_status			*init_status(int count)
+t_status	*init_status(int count)
 {
-	t_status *status;
+	t_status	*status;
 
 	if (count <= 0)
 		return (NULL);
-	if ((!(status = malloc(sizeof(t_status)))))
+	status = malloc(sizeof(t_status));
+	if (!status)
 		return (NULL);
 	status->philo_count = count;
 	status->simu_state = 0;
@@ -42,11 +43,11 @@ t_status			*init_status(int count)
 	return (status);
 }
 
-t_philo				*init_philosopher(char **av, int ac)
+t_philo	*init_philosopher(char **av, int ac)
 {
-	t_philo			*list;
-	t_status		*status;
-	int				i;
+	t_philo		*list;
+	t_status	*status;
+	int			i;
 
 	i = 0;
 	sem_unlink("/my_semafork");
@@ -57,8 +58,10 @@ t_philo				*init_philosopher(char **av, int ac)
 	g_semaprint = sem_open("/my_semaprint", O_CREAT, 0644, 1);
 	while (list && i < status->philo_count)
 	{
-		if (ac == 6)
-			(list + i)->count_meal = ft_atoi(av[5]) >= 0 ? ft_atoi(av[5]) : -2;
+		if (ac == 6 && ft_atoi(av[5]) >= 0)
+			(list + i)->count_meal = ft_atoi(av[5]);
+		else if (ac == 6)
+			(list + i)->count_meal = -2;
 		else
 			(list + i)->count_meal = -1;
 		create_philosopher(list + i, i + 1, av, status);

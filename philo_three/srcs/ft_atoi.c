@@ -6,11 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/28 13:19:17 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/02/28 13:19:21 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 12:57:08 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
 	int		nb;
 	int		sign;

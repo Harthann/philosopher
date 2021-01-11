@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 10:25:41 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/12 10:25:45 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 13:12:02 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@
 **######################################################
 */
 
-sem_t *g_semaprint;
-sem_t *g_semafork;
+sem_t	*g_semaprint;
+sem_t	*g_semafork;
 
-typedef struct		s_status
+typedef struct s_status
 {
 	int				simu_state;
 	int				philo_count;
 	int				started;
 	sem_t			*semafork;
 	sem_t			*finished_meal;
-}					t_status;
+}	t_status;
 
 /*
 ** tts = time to sleep;
@@ -61,7 +61,7 @@ typedef struct		s_status
 ** fork = 0 : fork unlock	fork = 1 : fork lock
 */
 
-typedef struct		s_philo
+typedef struct s_philo
 {
 	long			ttd;
 	long			tte;
@@ -71,7 +71,7 @@ typedef struct		s_philo
 	t_status		*status;
 	int				count_meal;
 	struct timeval	last_meal;
-}					t_philo;
+}	t_philo;
 
 int					ft_atoi(char *str);
 void				ft_putnbr(long nb);
@@ -87,8 +87,8 @@ long				compare_time(struct timeval	tp, struct timeval start_t);
 void				print_state(long timestamp, int number, char *str);
 void				ft_free(t_philo *list);
 
-void				create_philosopher(t_philo *philo, int number,
-									char **av, t_status *status);
+void				create_philosopher(t_philo *philo, int number
+									, char **av, t_status *status);
 pthread_mutex_t		*init_mutex_table(int length);
 t_philo				*init_philosopher(char **av, int ac);
 int					check_validity(t_philo *list);

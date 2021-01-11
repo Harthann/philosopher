@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/11/17 16:00:02 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/11 12:56:33 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-int		take_a_fork(t_philo *philo)
+int	take_a_fork(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
-	struct timezone tzp;
+	struct timezone	tzp;
 
 	sem_wait(philo->status->semafork);
 	if (philo->status->simu_state == -1)
@@ -64,7 +64,7 @@ void	*philosopher_vitals(void *philosopher)
 
 void	child_killer(pid_t *pid_list, int nb)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < nb)
@@ -75,19 +75,21 @@ void	child_killer(pid_t *pid_list, int nb)
 	free(pid_list);
 }
 
-int		main_simu(t_philo *list, int nb)
+int	main_simu(t_philo *list, int nb)
 {
-	int			i;
-	pid_t		*pid_list;
-	int			status;
+	int		i;
+	pid_t	*pid_list;
+	int		status;
 
 	status = 0;
-	if (!(pid_list = malloc(sizeof(pid_t) * nb)))
+	pid_list = malloc(sizeof(pid_t) * nb);
+	if (!pid_list)
 		return (0);
 	i = 0;
 	while (i < nb)
 	{
-		if (!(pid_list[i] = fork()))
+		pid_list[i] = fork();
+		if (!pid_list[i])
 			return (philosopher_loop(list + i));
 		i++;
 	}
@@ -101,13 +103,14 @@ int		main_simu(t_philo *list, int nb)
 	return (0);
 }
 
-int		main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_philo *list;
+	t_philo	*list;
 
 	if (ac != 5 && ac != 6)
 		return (1);
-	if (!(list = init_philosopher(av, ac)) || check_validity(list))
+	list = init_philosopher(av, ac);
+	if (!list || check_validity(list))
 	{
 		write(1, "initialisation failed!\n", 24);
 		return (1);

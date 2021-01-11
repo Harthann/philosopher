@@ -6,15 +6,15 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 10:04:34 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/05 11:06:56 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 13:01:48 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-int		check_validity(t_philo *list)
+int	check_validity(t_philo *list)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!list || !list->status || list->ttd < 0

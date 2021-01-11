@@ -6,13 +6,13 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/12 10:14:12 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 12:53:10 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-int		philosopher_loop(void *philosopher)
+int	philosopher_loop(void *philosopher)
 {
 	t_philo			*philo;
 	pthread_t		vitals;
@@ -29,12 +29,12 @@ int		philosopher_loop(void *philosopher)
 	return (0);
 }
 
-int		philosopher_eating(t_philo *philo)
+int	philosopher_eating(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
 	struct timeval	tmp;
-	struct timezone tzp;
+	struct timezone	tzp;
 
 	gettimeofday(&start_t, &tzp);
 	philo->last_meal = start_t;
@@ -56,12 +56,12 @@ int		philosopher_eating(t_philo *philo)
 	return (philosopher_sleeping(philo));
 }
 
-int		philosopher_sleeping(t_philo *philo)
+int	philosopher_sleeping(t_philo *philo)
 {
 	long			time;
 	struct timeval	start_t;
 	struct timeval	tmp;
-	struct timezone tzp;
+	struct timezone	tzp;
 
 	gettimeofday(&start_t, &tzp);
 	time = compare_time(start_t, philo->timestamp);
@@ -75,10 +75,10 @@ int		philosopher_sleeping(t_philo *philo)
 	return (philosopher_thinking(philo));
 }
 
-int		philosopher_thinking(t_philo *philo)
+int	philosopher_thinking(t_philo *philo)
 {
 	long			time;
-	struct timezone tzp;
+	struct timezone	tzp;
 	struct timeval	start_t;
 
 	gettimeofday(&start_t, &tzp);
