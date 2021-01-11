@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_validity.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/11 10:04:34 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/07 11:06:30 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/11 09:19:11 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	check_validity(t_philo *list)
 	int	i;
 
 	i = 0;
+	if (!g_printing)
+		return (1);
 	if (!list || !list->status || list->ttd < 0
 		|| list->tte < 0 || list->tts < 0)
 		return (1);

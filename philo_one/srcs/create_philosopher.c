@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_philosopher.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/08 08:58:19 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/11 09:09:37 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	set_forks(t_philo *philo, pthread_mutex_t *mutex_table, int i)
 	{
 		philo->mutex_right = mutex_table + i;
 		philo->mutex_left = mutex_table;
-		if (i + 1 == philo->status->philo_count)
-			philo->mutex_left += 1;
+		if (i + 1 != philo->status->philo_count)
+			philo->mutex_left += (i + 1);
 	}
 }
 
@@ -82,8 +82,6 @@ t_philo	*init_philosopher(char **av, int ac)
 	list = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	status = init_status(ft_atoi(av[1]));
 	g_printing = malloc(sizeof(pthread_mutex_t));
-	if (!g_printing)
-		return (NULL);
 	pthread_mutex_init(g_printing, NULL);
 	while (list && i < status->philo_count)
 	{
