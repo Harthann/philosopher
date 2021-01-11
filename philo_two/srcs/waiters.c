@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/05 10:57:33 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 10:25:15 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	my_sleep(long time)
 {
 	struct timeval	tp;
-	struct timezone tzp;
+	struct timezone	tzp;
 	struct timeval	tmp;
 
 	gettimeofday(&tp, &tzp);

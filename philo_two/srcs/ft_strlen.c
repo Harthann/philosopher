@@ -6,13 +6,13 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 12:40:01 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/07/07 10:14:57 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 11:25:01 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned	ft_strlen(char *str)
+unsigned int	ft_strlen(char *str)
 {
-	unsigned i;
+	unsigned int	i;
 
 	i = 0;
 	while (str[i])

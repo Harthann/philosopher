@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/10/04 13:27:29 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 10:25:27 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_strcpy(char *dest, char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])

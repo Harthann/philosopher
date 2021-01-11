@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 10:15:40 by nieyraud          #+#    #+#             */
-/*   Updated: 2020/09/30 10:57:42 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/11 11:30:32 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 long	compare_time(struct timeval	tp, struct timeval start_t)
 {
-	long time;
+	long	time;
 
 	time = tp.tv_sec * 1000;
 	time += tp.tv_usec / 1000;
