@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/12 10:25:07 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/12 10:39:36 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	add_numb(char *str, long nb)
 
 void	print_state(struct timeval timestamp, int number, char *str)
 {
-	cha				to_print[100];
+	char				to_print[100];
 	struct timeval	tp;
 
 	pthread_mutex_lock(g_printing);

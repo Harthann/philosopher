@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/12 10:07:23 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/12 11:58:48 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ void	*philosopher_vitals(void *philosopher)
 
 	philo = (t_philo*)philosopher;
 	wait_start(*philo);
-	while (philo->status->simu_state != -1
-		&& philo->status->simu_state != philo->status->philo_count)
+	while (1)
 	{
 		usleep(1000);
 		pthread_mutex_lock(&philo->action);
@@ -43,7 +42,9 @@ void	*philosopher_vitals(void *philosopher)
 		if (time > philo->ttd)
 		{
 			print_state(start_t, philo->number, " died\n");
+			pthread_mutex_lock(g_printing);
 			philo->status->simu_state = -1;
+			break ;
 		}
 		pthread_mutex_unlock(&philo->action);
 	}
