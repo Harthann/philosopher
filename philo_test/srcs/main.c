@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/12 11:58:48 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/13 13:46:03 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,46 @@
 
 int	take_a_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->mutex_left);
-	if (philo->status->simu_state == -1)
-		return (1);
+	// struct timeval	start_t;
+
+	pthread_mutex_lock(philo->mutex_left); // fork mutex
+
+	// pthread_mutex_unlock(&philo->action); // unlock/lock to activate death check
+	// pthread_mutex_lock(&philo->action);
 	print_state(philo->timestamp, philo->number, " has taken a fork \n");
+
 	pthread_mutex_lock(philo->mutex_right);
-	if (philo->status->simu_state == -1)
-		return (1);
+
+	// pthread_mutex_unlock(&philo->action);
+	// pthread_mutex_lock(&philo->action);
 	print_state(philo->timestamp, philo->number, " has taken a fork \n");
 	return (0);
 }
 
-void	*philosopher_vitals(void *philosopher)
+void	*philosopher_nurse(void *philosopher)
 {
 	t_philo			*philo;
 	long			time;
 	struct timeval	start_t;
 
 	philo = (t_philo*)philosopher;
-	wait_start(*philo);
+	// wait_start(*philo);
 	while (1)
 	{
-		usleep(1000);
 		pthread_mutex_lock(&philo->action);
 		gettimeofday(&start_t, NULL);
+		// print_state(philo->last_meal, philo->number, " NURSE ENTERED LIFE CHECKING\n");
+
 		time = compare_time(start_t, philo->last_meal);
 		if (time > philo->ttd)
 		{
-			print_state(start_t, philo->number, " died\n");
+			print_state(philo->timestamp, philo->number, " died\n");
 			pthread_mutex_lock(g_printing);
 			philo->status->simu_state = -1;
 			break ;
 		}
 		pthread_mutex_unlock(&philo->action);
+		usleep(philo->ttd);
 	}
 	return (0);
 }
@@ -60,17 +67,21 @@ int	main_simu(t_philo *list, int nb)
 	if (!thread_list)
 		return (0);
 	i = 0;
+	pthread_mutex_lock(&g_start);
 	while (i < nb)
 	{
 		pthread_create(&thread_list[i], NULL,
-						philosopher_vitals, (void*)(list + i));
+						philosopher_nurse, (void*)(list + i));
 		pthread_create(&thread_list[i + nb], NULL,
 						philosopher_loop, (void*)(list + i));
 		i++;
 	}
+	pthread_mutex_unlock(&g_start);
+	usleep(1000);
 	list->status->started = 1;
 	while (list->status->simu_state != -1 && list->status->simu_state != nb)
 		;
+	printf("Leaving loop\n");
 	free(thread_list);
 	return (0);
 }

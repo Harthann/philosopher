@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/12 08:28:04 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/13 11:18:27 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 */
 
 pthread_mutex_t	*g_printing;
+pthread_mutex_t g_start;
 
 typedef struct s_status
 {
@@ -91,9 +92,6 @@ int				check_validity(t_philo *list);
 
 int				take_a_fork(t_philo *philo);
 void			*philosopher_loop(void *philosopher);
-int				philosopher_eating(t_philo *philo);
-int				philosopher_sleeping(t_philo *philo);
-int				philosopher_thinking(t_philo *philo);
 void			my_sleep(long time);
 
 #endif

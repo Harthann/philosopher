@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   waiters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/07 11:06:06 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/13 08:53:59 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	my_sleep(long time)
 
 void	wait_start(t_philo philo)
 {
-	while (!philo.status->started)
-		usleep(1000);
+	pthread_mutex_lock(&g_start);
+	pthread_mutex_unlock(&g_start);
+	(void)philo;
+	// while (!philo.status->started)
+	// 	usleep(1000);
 }

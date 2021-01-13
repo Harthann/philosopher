@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 15:03:57 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/13 10:07:58 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_philo	*init_philosopher(char **av, int ac)
 	int				i;
 
 	i = 0;
+	pthread_mutex_init(&g_start, NULL);
 	mutex_table = init_mutex_table(ft_atoi(av[1]));
 	list = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	status = init_status(ft_atoi(av[1]));

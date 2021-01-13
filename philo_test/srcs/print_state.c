@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:36 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/12 10:39:36 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/13 13:30:14 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	print_state(struct timeval timestamp, int number, char *str)
 	char				to_print[100];
 	struct timeval	tp;
 
-	pthread_mutex_lock(g_printing);
 	gettimeofday(&tp, NULL);
+	pthread_mutex_lock(g_printing);
 	memset(to_print, 0, 100);
 	add_numb(to_print, compare_time(tp, timestamp));
 	to_print[ft_strlen(to_print)] = ' ';
