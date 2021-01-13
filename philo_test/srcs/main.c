@@ -6,29 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/13 13:46:03 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/13 14:36:44 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
-
-int	take_a_fork(t_philo *philo)
-{
-	// struct timeval	start_t;
-
-	pthread_mutex_lock(philo->mutex_left); // fork mutex
-
-	// pthread_mutex_unlock(&philo->action); // unlock/lock to activate death check
-	// pthread_mutex_lock(&philo->action);
-	print_state(philo->timestamp, philo->number, " has taken a fork \n");
-
-	pthread_mutex_lock(philo->mutex_right);
-
-	// pthread_mutex_unlock(&philo->action);
-	// pthread_mutex_lock(&philo->action);
-	print_state(philo->timestamp, philo->number, " has taken a fork \n");
-	return (0);
-}
 
 void	*philosopher_nurse(void *philosopher)
 {
@@ -37,13 +19,10 @@ void	*philosopher_nurse(void *philosopher)
 	struct timeval	start_t;
 
 	philo = (t_philo*)philosopher;
-	// wait_start(*philo);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->action);
 		gettimeofday(&start_t, NULL);
-		// print_state(philo->last_meal, philo->number, " NURSE ENTERED LIFE CHECKING\n");
-
 		time = compare_time(start_t, philo->last_meal);
 		if (time > philo->ttd)
 		{
@@ -67,7 +46,6 @@ int	main_simu(t_philo *list, int nb)
 	if (!thread_list)
 		return (0);
 	i = 0;
-	pthread_mutex_lock(&g_start);
 	while (i < nb)
 	{
 		pthread_create(&thread_list[i], NULL,
@@ -76,7 +54,6 @@ int	main_simu(t_philo *list, int nb)
 						philosopher_loop, (void*)(list + i));
 		i++;
 	}
-	pthread_mutex_unlock(&g_start);
 	usleep(1000);
 	list->status->started = 1;
 	while (list->status->simu_state != -1 && list->status->simu_state != nb)

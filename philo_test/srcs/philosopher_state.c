@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/13 13:46:01 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/13 14:35:28 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@ void	*philosopher_loop(void *philosopher)
 	philo = philosopher;
 	if (!(philo->number % 2))
 		usleep(50);
-	// pthread_mutex_lock(&philo->action);
-	// wait_start(*philo);
-	// gettimeofday(&tp, NULL);
-	// print_state(tp, philo->number, "STARTED\n");
 	while (1)
 		actions(philo);
 	return (NULL);
@@ -32,14 +28,17 @@ void	*philosopher_loop(void *philosopher)
 
 void	actions(t_philo *philo)
 {
-	// pthread_mutex_unlock(&philo->action); // unlock/lock to activate death check
-	// pthread_mutex_lock(&philo->action);
 	print_state(philo->timestamp, philo->number, " is thinking\n");
 
-	take_a_fork(philo);
+	// take_a_fork(philo);
+	pthread_mutex_lock(philo->mutex_left); // fork mutex
 
-	// pthread_mutex_unlock(&philo->action); // unlock/lock to activate death check
-	// pthread_mutex_lock(&philo->action);
+	print_state(philo->timestamp, philo->number, " has taken a fork \n");
+
+	pthread_mutex_lock(philo->mutex_right);
+
+	print_state(philo->timestamp, philo->number, " has taken a fork \n");
+	
 	print_state(philo->timestamp, philo->number, " is eating\n");
 
 	gettimeofday(&philo->last_meal, NULL);
@@ -50,8 +49,6 @@ void	actions(t_philo *philo)
 	pthread_mutex_unlock(philo->mutex_left);
 	pthread_mutex_unlock(philo->mutex_right);
 
-	// pthread_mutex_unlock(&philo->action); // unlock/lock to activate death check
-	// pthread_mutex_lock(&philo->action);
 	print_state(philo->timestamp, philo->number, " is sleeping\n");
 
 	my_sleep(philo->tts);

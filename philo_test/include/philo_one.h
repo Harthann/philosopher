@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/13 11:18:27 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/13 14:37:08 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 */
 
 pthread_mutex_t	*g_printing;
-pthread_mutex_t g_start;
 
 typedef struct s_status
 {
@@ -83,14 +82,12 @@ int				ft_count_length(long int n);
 long			compare_time(struct timeval	tp, struct timeval start_t);
 void			print_state(struct timeval timestamp, int number, char *str);
 void			ft_free(t_philo *list);
-void			wait_start(t_philo philo);
 
 void			create_philosopher(t_philo *p, int n, char **a, t_status *s);
 pthread_mutex_t	*init_mutex_table(int length);
 t_philo			*init_philosopher(char **av, int ac);
 int				check_validity(t_philo *list);
 
-int				take_a_fork(t_philo *philo);
 void			*philosopher_loop(void *philosopher);
 void			my_sleep(long time);
 
