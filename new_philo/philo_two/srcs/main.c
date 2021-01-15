@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/15 11:23:49 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 13:20:27 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int	main_simu(t_philo *list, int nb)
 	i = 0;
 	while (i < nb)
 	{
+		// pthread_create(&thread_list[i], NULL,
+		// 				philosopher_nurse, (void*)(list + i));
 		pthread_create(&thread_list[i], NULL,
-						philosopher_nurse, (void*)(list + i));
-		pthread_create(&thread_list[i + nb], NULL,
 						philosopher_loop, (void*)(list + i));
 		i++;
 	}

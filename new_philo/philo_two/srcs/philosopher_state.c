@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/15 12:11:45 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 13:32:14 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ void	*philosopher_nurse(void *philosopher)
 void	*philosopher_loop(void *philosopher)
 {
 	t_philo			*philo;
+	pthread_t	nurse;
 
 	philo = philosopher;
+	pthread_create(&nurse, NULL, philosopher_nurse, philosopher);
 	if (!(philo->number % 2))
-		usleep(50);
+		usleep(1000);
 	while (1)
 		actions(philo);
 	return (NULL);
