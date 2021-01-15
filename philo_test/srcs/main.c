@@ -6,36 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/13 14:36:44 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 09:01:31 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
-
-void	*philosopher_nurse(void *philosopher)
-{
-	t_philo			*philo;
-	long			time;
-	struct timeval	start_t;
-
-	philo = (t_philo*)philosopher;
-	while (1)
-	{
-		pthread_mutex_lock(&philo->action);
-		gettimeofday(&start_t, NULL);
-		time = compare_time(start_t, philo->last_meal);
-		if (time > philo->ttd)
-		{
-			print_state(philo->timestamp, philo->number, " died\n");
-			pthread_mutex_lock(g_printing);
-			philo->status->simu_state = -1;
-			break ;
-		}
-		pthread_mutex_unlock(&philo->action);
-		usleep(philo->ttd);
-	}
-	return (0);
-}
 
 int	main_simu(t_philo *list, int nb)
 {
@@ -54,11 +29,8 @@ int	main_simu(t_philo *list, int nb)
 						philosopher_loop, (void*)(list + i));
 		i++;
 	}
-	usleep(1000);
-	list->status->started = 1;
 	while (list->status->simu_state != -1 && list->status->simu_state != nb)
-		;
-	printf("Leaving loop\n");
+		usleep (1000);
 	free(thread_list);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/13 14:37:08 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 08:35:05 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ typedef struct s_status
 ** tts = time to sleep;
 ** ttd = time to die;
 ** tte = time to eat;
-** state : 0 = think, 1 = eat, 2 = sleep, 3 = dead, 4 = pending
-** fork = 0 : fork unlock	fork = 1 : fork lock
 */
 
 typedef struct s_philo
@@ -83,6 +81,7 @@ long			compare_time(struct timeval	tp, struct timeval start_t);
 void			print_state(struct timeval timestamp, int number, char *str);
 void			ft_free(t_philo *list);
 
+
 void			create_philosopher(t_philo *p, int n, char **a, t_status *s);
 pthread_mutex_t	*init_mutex_table(int length);
 t_philo			*init_philosopher(char **av, int ac);
@@ -90,5 +89,7 @@ int				check_validity(t_philo *list);
 
 void			*philosopher_loop(void *philosopher);
 void			my_sleep(long time);
+void			actions(t_philo *philo);
+void			*philosopher_nurse(void *philosopher);
 
 #endif
