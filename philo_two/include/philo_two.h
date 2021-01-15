@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 10:53:47 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 15:11:39 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int				ft_count_length(long int n);
 void			wait_start(t_philo philo);
 
 long			compare_time(struct timeval	tp, struct timeval start_t);
-void			print_state(long timestamp, int number, char *str);
+void			print_state(struct timeval timestamp, int number, char *str);
 void			ft_free(t_philo *list);
 
 void			create_philosopher(t_philo *p, int n, char **a, t_status *s);
@@ -92,9 +92,8 @@ int				check_validity(t_philo *list);
 
 int				take_a_fork(t_philo *philo);
 void			*philosopher_loop(void *philosopher);
-int				philosopher_eating(t_philo *philo);
-int				philosopher_sleeping(t_philo *philo);
-int				philosopher_thinking(t_philo *philo);
+void			*philosopher_nurse(void *philosopher);
 void			my_sleep(long time);
+void			actions(t_philo *philo);
 
 #endif

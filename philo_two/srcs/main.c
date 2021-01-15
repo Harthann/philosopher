@@ -6,59 +6,11 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 10:30:28 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 15:10:37 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
-
-int	take_a_fork(t_philo *philo)
-{
-	long			time;
-	struct timeval	start_t;
-	struct timezone	tzp;
-
-	sem_wait(philo->status->semafork);
-	if (philo->status->simu_state == -1)
-		return (1);
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " has taken a fork \n");
-	sem_wait(philo->status->semafork);
-	if (philo->status->simu_state == -1)
-		return (1);
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " has taken a fork \n");
-	return (0);
-}
-
-void	*philosopher_vitals(void *philosopher)
-{
-	t_philo			*philo;
-	long			time;
-	struct timeval	start_t;
-	struct timezone	tzp;
-
-	philo = (t_philo*)philosopher;
-	wait_start(*philo);
-	gettimeofday(&philo->timestamp, NULL);
-	philo->last_meal = philo->timestamp;
-	while (philo->status->simu_state != -1
-		&& philo->status->simu_state != philo->status->philo_count)
-	{
-		gettimeofday(&start_t, &tzp);
-		time = compare_time(start_t, philo->last_meal);
-		if (time > philo->ttd)
-		{
-			print_state(compare_time(start_t, philo->timestamp),
-									philo->number, " died\n");
-			philo->status->simu_state = -1;
-		}
-		usleep(philo->ttd);
-	}
-	return (0);
-}
 
 int	main_simu(t_philo *list, int nb)
 {
@@ -72,8 +24,6 @@ int	main_simu(t_philo *list, int nb)
 	while (i < nb)
 	{
 		pthread_create(&thread_list[i], NULL,
-						philosopher_vitals, (void*)(list + i));
-		pthread_create(&thread_list[i + nb], NULL,
 						philosopher_loop, (void*)(list + i));
 		i++;
 	}

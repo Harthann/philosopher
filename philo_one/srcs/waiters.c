@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   waiters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/06 09:00:00 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/07 11:06:06 by user42           ###   ########.fr       */
+/*   Updated: 2021/01/13 14:36:54 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,4 @@ void	my_sleep(long time)
 		usleep(1000);
 		gettimeofday(&tmp, &tzp);
 	}
-}
-
-void	wait_start(t_philo philo)
-{
-	while (!philo.status->started)
-		usleep(1000);
 }

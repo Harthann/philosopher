@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 11:08:45 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 15:03:53 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 15:09:56 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ typedef struct s_status
 ** tts = time to sleep;
 ** ttd = time to die;
 ** tte = time to eat;
-** state : 0 = think, 1 = eat, 2 = sleep, 3 = dead, 4 = pending
-** fork = 0 : fork unlock	fork = 1 : fork lock
 */
 
 typedef struct s_philo
@@ -80,20 +78,17 @@ size_t			ft_strlen(char *str);
 int				ft_count_length(long int n);
 
 long			compare_time(struct timeval	tp, struct timeval start_t);
-void			print_state(long timestamp, int number, char *str);
+void			print_state(struct timeval timestamp, int number, char *str);
 void			ft_free(t_philo *list);
-void			wait_start(t_philo philo);
 
 void			create_philosopher(t_philo *p, int n, char **a, t_status *s);
 pthread_mutex_t	*init_mutex_table(int length);
 t_philo			*init_philosopher(char **av, int ac);
 int				check_validity(t_philo *list);
 
-int				take_a_fork(t_philo *philo);
 void			*philosopher_loop(void *philosopher);
-int				philosopher_eating(t_philo *philo);
-int				philosopher_sleeping(t_philo *philo);
-int				philosopher_thinking(t_philo *philo);
 void			my_sleep(long time);
+void			actions(t_philo *philo);
+void			*philosopher_nurse(void *philosopher);
 
 #endif

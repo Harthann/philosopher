@@ -6,61 +6,61 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/11 12:56:33 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/15 12:16:26 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-int	take_a_fork(t_philo *philo)
-{
-	long			time;
-	struct timeval	start_t;
-	struct timezone	tzp;
+// int	take_a_fork(t_philo *philo)
+// {
+// 	long			time;
+// 	struct timeval	start_t;
+// 	struct timezone	tzp;
 
-	sem_wait(philo->status->semafork);
-	if (philo->status->simu_state == -1)
-		return (1);
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " has taken a fork \n");
-	sem_wait(philo->status->semafork);
-	if (philo->status->simu_state == -1)
-		return (1);
-	gettimeofday(&start_t, &tzp);
-	time = compare_time(start_t, philo->timestamp);
-	print_state(time, philo->number, " has taken a fork \n");
-	return (0);
-}
+// 	sem_wait(philo->status->semafork);
+// 	if (philo->status->simu_state == -1)
+// 		return (1);
+// 	gettimeofday(&start_t, &tzp);
+// 	time = compare_time(start_t, philo->timestamp);
+// 	print_state(time, philo->number, " has taken a fork \n");
+// 	sem_wait(philo->status->semafork);
+// 	if (philo->status->simu_state == -1)
+// 		return (1);
+// 	gettimeofday(&start_t, &tzp);
+// 	time = compare_time(start_t, philo->timestamp);
+// 	print_state(time, philo->number, " has taken a fork \n");
+// 	return (0);
+// }
 
-void	*philosopher_vitals(void *philosopher)
-{
-	t_philo			*philo;
-	long			time;
-	struct timeval	start_t;
-	struct timezone	tzp;
-	int				i;
+// void	*philosopher_vitals(void *philosopher)
+// {
+// 	t_philo			*philo;
+// 	long			time;
+// 	struct timeval	start_t;
+// 	struct timezone	tzp;
+// 	int				i;
 
-	philo = (t_philo*)philosopher;
-	i = 0;
-	while (philo->status->simu_state != -1)
-	{
-		gettimeofday(&start_t, &tzp);
-		time = compare_time(start_t, philo->last_meal);
-		if (time > philo->ttd)
-		{
-			print_state(compare_time(start_t, philo->timestamp),
-									philo->number, " died\n");
-			sem_wait(g_semaprint);
-			philo->status->simu_state = -1;
-			while (i++ < philo->status->philo_count)
-				sem_post(philo->status->finished_meal);
-			exit(0);
-		}
-		usleep(philo->ttd);
-	}
-	return (0);
-}
+// 	philo = (t_philo*)philosopher;
+// 	i = 0;
+// 	while (philo->status->simu_state != -1)
+// 	{
+// 		gettimeofday(&start_t, &tzp);
+// 		time = compare_time(start_t, philo->last_meal);
+// 		if (time > philo->ttd)
+// 		{
+// 			print_state(compare_time(start_t, philo->timestamp),
+// 									philo->number, " died\n");
+// 			sem_wait(g_semaprint);
+// 			philo->status->simu_state = -1;
+// 			while (i++ < philo->status->philo_count)
+// 				sem_post(philo->status->finished_meal);
+// 			exit(0);
+// 		}
+// 		usleep(philo->ttd);
+// 	}
+// 	return (0);
+// }
 
 void	child_killer(pid_t *pid_list, int nb)
 {
