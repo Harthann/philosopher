@@ -6,61 +6,26 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:19 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/15 12:16:26 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/16 08:27:30 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_three.h"
 
-// int	take_a_fork(t_philo *philo)
-// {
-// 	long			time;
-// 	struct timeval	start_t;
-// 	struct timezone	tzp;
+int	argument_validity(int ac, char **av)
+{
+	int	ret;
 
-// 	sem_wait(philo->status->semafork);
-// 	if (philo->status->simu_state == -1)
-// 		return (1);
-// 	gettimeofday(&start_t, &tzp);
-// 	time = compare_time(start_t, philo->timestamp);
-// 	print_state(time, philo->number, " has taken a fork \n");
-// 	sem_wait(philo->status->semafork);
-// 	if (philo->status->simu_state == -1)
-// 		return (1);
-// 	gettimeofday(&start_t, &tzp);
-// 	time = compare_time(start_t, philo->timestamp);
-// 	print_state(time, philo->number, " has taken a fork \n");
-// 	return (0);
-// }
-
-// void	*philosopher_vitals(void *philosopher)
-// {
-// 	t_philo			*philo;
-// 	long			time;
-// 	struct timeval	start_t;
-// 	struct timezone	tzp;
-// 	int				i;
-
-// 	philo = (t_philo*)philosopher;
-// 	i = 0;
-// 	while (philo->status->simu_state != -1)
-// 	{
-// 		gettimeofday(&start_t, &tzp);
-// 		time = compare_time(start_t, philo->last_meal);
-// 		if (time > philo->ttd)
-// 		{
-// 			print_state(compare_time(start_t, philo->timestamp),
-// 									philo->number, " died\n");
-// 			sem_wait(g_semaprint);
-// 			philo->status->simu_state = -1;
-// 			while (i++ < philo->status->philo_count)
-// 				sem_post(philo->status->finished_meal);
-// 			exit(0);
-// 		}
-// 		usleep(philo->ttd);
-// 	}
-// 	return (0);
-// }
+	ret = 0;
+	if (ft_atoi(av[1]) <= 1)
+		ret += write(2, "Not enough philosopher to start simulation\n", 44);
+	if (ft_atoi(av[2]) <= 0 || ft_atoi(av[3]) <= 0 || ft_atoi(av[4]) <= 0)
+		ret += write(2, "Times can't be negative or equal to zero\n", 41);
+	if (ac == 6 && ft_atoi(av[5]) <= 0)
+		ret += write(2,
+				"Philosophers can't eat a negative number of meal\n", 49);
+	return (ret);
+}
 
 void	child_killer(pid_t *pid_list, int nb)
 {
@@ -108,7 +73,9 @@ int	main(int ac, char **av)
 	t_philo	*list;
 
 	if (ac != 5 && ac != 6)
-		return (1);
+		return (0);
+	if (argument_validity(ac, av))
+		return (0);
 	list = init_philosopher(av, ac);
 	if (!list || check_validity(list))
 	{

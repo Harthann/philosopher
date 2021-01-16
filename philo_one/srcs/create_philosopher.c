@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/07 10:45:55 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/13 14:36:31 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/16 08:32:24 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	create_philosopher(t_philo *philo, int number
 	philo->tts = ft_atoi(av[4]);
 	philo->number = number;
 	philo->status = status;
-	pthread_mutex_init(&philo->action, NULL);
 	gettimeofday(&philo->timestamp, &tzp);
 	philo->last_meal = philo->timestamp;
 }

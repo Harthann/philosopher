@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/15 15:07:06 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/16 09:24:52 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ void	*philosopher_nurse(void *philosopher)
 	philo = (t_philo*)philosopher;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->action);
+		if (philo->status->simu_state == philo->status->philo_count)
+		{
+			pthread_mutex_lock(g_printing);
+			break ;
+		}
 		gettimeofday(&start_t, NULL);
 		time = compare_time(start_t, philo->last_meal);
 		if (time > philo->ttd)
@@ -30,8 +34,7 @@ void	*philosopher_nurse(void *philosopher)
 			philo->status->simu_state = -1;
 			break ;
 		}
-		pthread_mutex_unlock(&philo->action);
-		usleep(philo->ttd);
+		usleep(philo->tte);
 	}
 	return (0);
 }
@@ -39,10 +42,8 @@ void	*philosopher_nurse(void *philosopher)
 void	*philosopher_loop(void *philosopher)
 {
 	t_philo		*philo;
-	pthread_t	nurse;
 
 	philo = philosopher;
-	pthread_create(&nurse, NULL, philosopher_nurse, philosopher);
 	if (!(philo->number % 2))
 		usleep(1000);
 	while (1)
@@ -54,9 +55,9 @@ void	actions(t_philo *philo)
 {
 	print_state(philo->timestamp, philo->number, " is thinking\n");
 	pthread_mutex_lock(philo->mutex_left);
-	print_state(philo->timestamp, philo->number, " has taken a fork \n");
+	print_state(philo->timestamp, philo->number, " has taken a fork\n");
 	pthread_mutex_lock(philo->mutex_right);
-	print_state(philo->timestamp, philo->number, " has taken a fork \n");
+	print_state(philo->timestamp, philo->number, " has taken a fork\n");
 	print_state(philo->timestamp, philo->number, " is eating\n");
 	gettimeofday(&philo->last_meal, NULL);
 	my_sleep(philo->tte);

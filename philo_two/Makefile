@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
+#    By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/28 12:41:17 by nieyraud          #+#    #+#              #
-#    Updated: 2020/11/07 15:30:02 by user42           ###   ########.fr        #
+#    Updated: 2021/01/16 08:28:18 by nieyraud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ OBJS = ${addprefix $(OBJS_PATH)/, $(SRCS:%.c=%.o)}
 HEADER = philo_two.h
 INCLUDE = include
 
-FLAGS = -Wall -Wextra
+FLAGS = -Wall -Wextra -Werror
 CC = clang
 
 all: $(NAME)

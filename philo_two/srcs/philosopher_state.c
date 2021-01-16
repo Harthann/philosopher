@@ -6,7 +6,7 @@
 /*   By: nieyraud <nieyraud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/07 07:59:46 by nieyraud          #+#    #+#             */
-/*   Updated: 2021/01/15 15:11:06 by nieyraud         ###   ########.fr       */
+/*   Updated: 2021/01/16 08:46:15 by nieyraud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	*philosopher_nurse(void *philosopher)
 
 	philo = (t_philo*)philosopher;
 	gettimeofday(&philo->timestamp, NULL);
-	while (philo->status->simu_state != -1
-		&& philo->status->simu_state != philo->status->philo_count)
+	while (philo->status->simu_state != philo->status->philo_count)
 	{
 		gettimeofday(&start_t, &tzp);
 		time = compare_time(start_t, philo->last_meal);
@@ -31,7 +30,7 @@ void	*philosopher_nurse(void *philosopher)
 			print_state(philo->timestamp, philo->number, " died\n");
 			philo->status->simu_state = -1;
 		}
-		usleep(philo->ttd);
+		usleep(1000);
 	}
 	return (0);
 }
@@ -39,10 +38,8 @@ void	*philosopher_nurse(void *philosopher)
 void	*philosopher_loop(void *philosopher)
 {
 	t_philo		*philo;
-	pthread_t	nurse;
 
 	philo = philosopher;
-	pthread_create(&nurse, NULL, philosopher_nurse, philosopher);
 	if (!(philo->number % 2))
 		usleep(1000);
 	while (1)
